@@ -2,7 +2,7 @@
   "name": "com.cam.camutil",
   "version": "1.1.0",
   "displayName": "Cam Utilities",
-  "description": "Cameron's personal tools, mainly for personal use.",
+  "description": "Cameron's personal tools, mainly for personal use. Requires:\nNew Unity Input System\nhttps://github.com/jilleJr/Newtonsoft.Json-for-Unity.git\nhttps://github.com/marijnz/unity-toolbar-extender.git\nhttps://github.com/starikcetin/unity-scene-reference.git\nhttps://github.com/cfoulston/Unity-Reorderable-List.git",
   "keywords": [
     "tools",
     "editor"
