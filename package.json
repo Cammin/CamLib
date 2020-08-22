@@ -2,7 +2,7 @@
   "name": "com.cam.camutil",
   "version": "1.1.1",
   "displayName": "Cam Utilities",
-  "description": "Cameron's personal tools, mainly for personal use. Requires:\nNew Unity Input System\nhttps://github.com/jilleJr/Newtonsoft.Json-for-Unity.git\nhttps://github.com/marijnz/unity-toolbar-extender.git\nhttps://github.com/starikcetin/unity-scene-reference.git\nhttps://github.com/cfoulston/Unity-Reorderable-List.git",
+  "description": "Cameron's personal tools, mainly for personal use. Requires:\nNew Unity Input System\nhttps://github.com/jilleJr/Newtonsoft.Json-for-Unity.git\nhttps://github.com/marijnz/unity-toolbar-extender.git\nhttps://github.com/starikcetin/unity-scene-reference.git\nhttps://github.com/cfoulston/Unity-Reorderable-List.git\n\nOptional packages:\nhttps://github.com/needle-tools/compilation-visualizer\n\nAlso grab asset store packs like rainbow folders, etc.",
   "keywords": [
     "tools",
     "editor"
@@ -12,12 +12,5 @@
     "email": "cameo221@gmail.com",
     "url": "cammin.itch.io"
   },
-  "hideInEditor": false,
-  "dependencies": {
-    "com.unity.inputsystem": "1.0.0",
-    "jillejr.newtonsoft.json-for-unity": "12.0.301",
-    "com.johannesmp.unityscenereference": "1.1.0",
-    "com.marijnzwemmer.unity-toolbar-extender": "1.2.0",
-    "com.malee.reorderablelist": "1.0.1"
-  }
+  "hideInEditor": false
 }
