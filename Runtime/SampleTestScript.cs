@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class SampleTestScript : MonoBehaviour
 {
-    private bool test2;
+    private bool test3;
 }
