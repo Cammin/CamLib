@@ -1,6 +1,6 @@
 {
   "name": "com.cam.camutil",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "displayName": "Cam Utilities",
   "description": "Cameron's personal tools, mainly for personal use. Check the README for adding dependencies.\nAlso grab asset store packs like rainbow folders, etc.",
   "keywords": [
