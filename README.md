@@ -1,6 +1,6 @@
 My personal utilities package.  
 This will gradually gain updates as it seems fit during personal project developments.  
-This package would contain functionality can apply to any Unity project.
+This package would contain general functionality that can apply to any Unity project.
 
 ## Features
   - Extension methods
