@@ -1,0 +1,19 @@
+{
+  "name": "com.cammin.CamLib",
+  "version": "0.1.0",
+  "displayName": "CamLib",
+  "description": "Cammin's personal Unity utility library.",
+  "documentationUrl": "",
+  "changelogUrl": "",
+  "licensesUrl": "",
+  "keywords": [
+    "tools",
+    "editor",
+    "library",
+    "utility"
+  ],
+  "author": {
+    "name": "Cammin"
+  },
+  "hideInEditor": false
+}
