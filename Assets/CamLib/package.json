@@ -1,11 +1,11 @@
 {
-  "name": "com.cammin.CamLib",
+  "name": "com.cammin.camlib",
   "version": "0.1.0",
   "displayName": "CamLib",
   "description": "Cammin's personal Unity utility library.",
-  "documentationUrl": "",
-  "changelogUrl": "",
-  "licensesUrl": "",
+  "documentationUrl": "https://github.com/Cammin/CamLib",
+  "changelogUrl": "https://github.com/Cammin/CamLib/blob/master/Assets/CamLib/CHANGELOG.md",
+  "licensesUrl": "https://github.com/Cammin/CamLib/blob/master/LICENSE.md",
   "keywords": [
     "tools",
     "editor",
