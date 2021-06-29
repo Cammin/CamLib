@@ -1,19 +1,16 @@
 {
-    "name": "CamLib.Editor.Tests",
+    "name": "CamLib.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:4c6481a3fda231149af656b47013c153",
-        "GUID:c304ee7b0467328498c20baef492b467"
+        "GUID:4c6481a3fda231149af656b47013c153"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "nunit.framework.dll"
-    ],
+    "overrideReferences": false,
+    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

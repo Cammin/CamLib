@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class SampleTestScript : MonoBehaviour
+namespace CamLib
 {
-    private bool test3;
+    public class SampleTestScript
+    {
+        private bool _test3;
+    }
 }
