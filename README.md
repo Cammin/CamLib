@@ -11,6 +11,8 @@ This package would contain functionality can apply to any Unity project.
   - MinMax field attribute (TODO)
   - Bool2 data type (TODO)
   - More Color options (TODO)
+  - SpriteLayerAttribute (TODO)
+  - ReadOnlyAttribute (TODO, consider at all?)
   - Utility Components
     - Singleton (TODO)
     - Simple Application closer (TODO)
