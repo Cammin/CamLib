@@ -5,6 +5,16 @@ This package would contain functionality can apply to any Unity project.
 ## Features
   - Extension methods
   - Simple save/load system
+  - Simple audio system (TODO)
+  - AudioClip field play-stop buttons
+  - Sprite field pixelperfect checkerboard preview
+  - MinMax field attribute (TODO)
+  - Bool2 data type (TODO)
+  - More Color options (TODO)
+  - Utility Components
+    - Singleton (TODO)
+    - Simple Application closer (TODO)
+
 
 ## Disclaimer
 The API could change at any moments notice. But *should* be relatively stable/unchanged.
