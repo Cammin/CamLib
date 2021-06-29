@@ -9,7 +9,7 @@ This package would contain functionality can apply to any Unity project.
   - AudioClip field play-stop buttons
   - Sprite field pixelperfect checkerboard preview
   - MinMax field attribute (TODO)
-  - Bool2 data type (TODO)
+  - Bool2 data type + PropertyDrawer (TODO)
   - More Color options (TODO)
   - SpriteLayerAttribute (TODO)
   - ReadOnlyAttribute (TODO, consider at all?)
