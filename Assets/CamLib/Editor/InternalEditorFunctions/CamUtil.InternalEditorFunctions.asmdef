@@ -1,10 +1,7 @@
 {
-    "name": "CamLib.Editor",
+    "name": "Assembly-CSharp-Editor-testable",
     "rootNamespace": "",
-    "references": [
-        "GUID:4c6481a3fda231149af656b47013c153",
-        "GUID:d571ac0f02cbde94894721a8744da082"
-    ],
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],
