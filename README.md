@@ -10,7 +10,7 @@ This package would contain general functionality that can apply to any Unity pro
   - Sprite field pixelperfect checkerboard preview
   - MinMax field attribute (TODO)
   - Bool2 data type + PropertyDrawer (TODO)
-  - More Color options (TODO)
+  - More Color options
   - SpriteLayerAttribute (TODO)
   - ReadOnlyAttribute (TODO, consider at all?)
   - Utility Components
