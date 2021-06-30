@@ -1,7 +1,9 @@
-﻿using UnityEditor;
+﻿using CamLib.Attributes;
+using CamLib.Editor.Util;
+using UnityEditor;
 using UnityEngine;
 
-namespace CamLib.Editor
+namespace CamLib.Editor.Attributes
 {
     [CustomPropertyDrawer(typeof(AudioClipButtonsAttribute))]
     public class AudioClipPropertyDrawer : PropertyDrawer

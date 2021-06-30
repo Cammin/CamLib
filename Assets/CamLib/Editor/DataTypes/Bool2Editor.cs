@@ -1,7 +1,8 @@
-﻿using UnityEditor;
+﻿using CamLib.DataTypes;
+using UnityEditor;
 using UnityEngine;
 
-namespace CamLib.Editor
+namespace CamLib.Editor.DataTypes
 {
     [CustomPropertyDrawer(typeof(Bool2))]
     public class Bool2Editor : PropertyDrawer

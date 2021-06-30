@@ -1,3 +1,5 @@
+using CamLib.Attributes;
+using CamLib.DataTypes;
 using UnityEngine;
 
 namespace CamLib.Scenes

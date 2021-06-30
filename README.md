@@ -7,9 +7,9 @@ This package would contain general functionality that can apply to any Unity pro
   - Simple save/load system
   - Simple audio system (TODO)
   - AudioClip field play-stop buttons
-  - Sprite field pixelperfect checkerboard preview
+  - Sprite field Pixel-Perfect checkerboard inspector preview
   - MinMax field attribute (TODO)
-  - Bool2 data type + PropertyDrawer (TODO)
+  - Bool2 data type
   - More Color options
   - SpriteLayerAttribute (TODO)
   - ReadOnlyAttribute (TODO, consider at all?)

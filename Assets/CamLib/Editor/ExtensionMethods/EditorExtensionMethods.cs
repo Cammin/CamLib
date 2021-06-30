@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CamLib.Editor
+namespace CamLib.Editor.ExtensionMethods
 {
     public static class EditorExtensionMethods
     {

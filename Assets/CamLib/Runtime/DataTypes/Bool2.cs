@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CamLib
+namespace CamLib.DataTypes
 {
     [Serializable]
     public struct Bool2 : IEquatable<Bool2>, IFormattable

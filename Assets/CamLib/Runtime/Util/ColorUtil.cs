@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CamLib
+namespace CamLib.Util
 {
     //consider looking for more colors at
     //https://github.com/Seanba/SuperTiled2Unity/blob/master/SuperTiled2Unity/Assets/SuperTiled2Unity/Scripts/Editor/Helpers/NamedColors.cs
