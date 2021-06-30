@@ -6,6 +6,8 @@ namespace CamLib.Scenes
 {
     public class TestFields : MonoBehaviour
     {
+        [SerializeField, ReadOnly] private float _readonlyValue;
+        
         [SerializeField] private Bool2 _bool2;
         
         [AudioClipButtons]

@@ -3,7 +3,7 @@ using CamLib.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace CamLib.Editor.Attributes
+namespace CamLib.Editor
 {
     [CustomPropertyDrawer(typeof(SpriteRenderAttribute))]
     [CanEditMultipleObjects]
