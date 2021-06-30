@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace CamLib
 {
@@ -19,6 +20,11 @@ namespace CamLib
         {
             return Math.Abs(val - other) < THRESHOLD;
         }
+        
+        public static bool IsNegative(this float val)
+        {
+            return val < 0;
+        }
 
         public static bool IsWhole(this float val)
         {
@@ -29,5 +35,13 @@ namespace CamLib
         {
             return UnityEngine.Random.Range(-val, val);
         }
+        
+        public static string StringFormatNoTrailedZeros(this float val)
+        {
+            string number = val.ToString(CultureInfo.CurrentCulture);
+            int i = val.IsWhole() ? 0 : number.Substring(number.IndexOf(".", StringComparison.Ordinal) + 1).Length;
+            return $"F{i}";
+        }
+
     }
 }
