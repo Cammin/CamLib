@@ -79,7 +79,14 @@ namespace CamLib.Editor
 
                 void PlayClipButton()
                 {
-                    if (GUI.Button(playButtonRect, "Play"))
+                    GUIContent playContent = new GUIContent()
+                    {
+                        image = EditorGUIUtil.GetUnityIcon("PlayButton", ""),
+                        tooltip = "Play"
+                    };
+
+
+                    if (GUI.Button(playButtonRect, playContent))
                     {
                         //restart the already playing clip.
                         if (InternalEditorFunctions.IsPreviewClipPlaying(clip))
@@ -94,9 +101,25 @@ namespace CamLib.Editor
 
                 void StopClipButton()
                 {
-                    if (GUI.Button(stopButtonRect, "Stop") && InternalEditorFunctions.IsPreviewClipPlaying(clip))
+                    GUIContent stopContent = new GUIContent()
                     {
-                        InternalEditorFunctions.StopAllPreviewClips();
+                        image = EditorGUIUtil.GetUnityIcon("PreMatQuad", ""),
+                        tooltip = "Stop"
+                    };
+                    
+                    if (InternalEditorFunctions.IsPreviewClipPlaying(clip))
+                    {
+                        if (GUI.Button(stopButtonRect, stopContent))
+                        {
+                            InternalEditorFunctions.StopAllPreviewClips();
+                        }
+                    }
+                    else
+                    {
+                        bool prev = GUI.enabled;
+                        GUI.enabled = false;
+                        GUI.Button(stopButtonRect, stopContent);
+                        GUI.enabled = prev;
                     }
                 }
             }
