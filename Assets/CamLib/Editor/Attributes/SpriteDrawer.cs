@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -17,28 +18,43 @@ namespace CamLib.Editor
             50, 16, 14, 12, 10, 8, 6, 4, 2
         };
 
+        private bool IsPropertyValid(SerializedProperty prop)
+        {
+            string type = prop.type;
+            return type.Contains(nameof(Sprite)) ||
+                   type.Contains(nameof(Texture2D)) ||
+                   type.Contains(nameof(Texture));
+        }
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float height = base.GetPropertyHeight(property, label);
             
+            if (!IsPropertyValid(property)) 
+            {
+                return height;
+            }
+
+
             //if no object assigned, do default height
             if (property.objectReferenceValue == null)
             {
                 return height;
             }
-            
+
             TryCacheTex(property);
-            
+
             //else add more height based on the image's height
 
             if (_tex == null || property.hasMultipleDifferentValues)
             {
                 return height;
             }
-            
+
             height += 2 + BORDER_WIDTH * 2;
             height += _tex.height;
             return height;
+            
         }
         
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -48,6 +64,19 @@ namespace CamLib.Editor
                 height = base.GetPropertyHeight(property, label)
             };
 
+            if (!IsPropertyValid(property))
+            {
+                GUIContent error = new GUIContent()
+                {
+                    text = label.text,
+                    tooltip = "Invalid usage of [SpriteRender].\nOnly use on Sprite, Texture2D, and Texture",
+                    image = EditorGUIUtil.GetUnityIcon("console.erroricon.sml", "")
+                };
+                
+                EditorGUI.LabelField(position, error);
+                return;
+            }
+            
             EditorGUI.PropertyField(position, property, label);
             property.serializedObject.ApplyModifiedProperties();
             
