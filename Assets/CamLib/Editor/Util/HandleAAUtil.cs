@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CamLib.Editor.Util
+namespace CamLib.Editor
 {
     public static class HandleAAUtil
     {

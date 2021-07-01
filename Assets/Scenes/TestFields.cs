@@ -1,8 +1,7 @@
-using CamLib.Attributes;
-using CamLib.DataTypes;
+using CamLib;
 using UnityEngine;
 
-namespace CamLib.Scenes
+namespace Scenes
 {
     public class TestFields : MonoBehaviour
     {

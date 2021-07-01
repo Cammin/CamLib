@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CamLib.Attributes
+namespace CamLib
 {
     public class SpriteRenderAttribute : PropertyAttribute { }
 }

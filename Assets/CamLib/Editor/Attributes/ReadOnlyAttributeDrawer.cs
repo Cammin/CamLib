@@ -1,5 +1,4 @@
-﻿using CamLib.Attributes;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CamLib.Editor

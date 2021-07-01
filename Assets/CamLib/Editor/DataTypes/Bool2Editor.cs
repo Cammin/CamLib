@@ -1,5 +1,4 @@
-﻿using CamLib.DataTypes;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CamLib.Editor

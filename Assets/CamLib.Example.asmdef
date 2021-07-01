@@ -1,0 +1,16 @@
+{
+    "name": "CamLib.Example",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4c6481a3fda231149af656b47013c153"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CamLib.Util
+namespace CamLib
 {
     public static class SnapTool
     {

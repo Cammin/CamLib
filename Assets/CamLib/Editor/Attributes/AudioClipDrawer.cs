@@ -1,6 +1,4 @@
-﻿using CamLib.Attributes;
-using CamLib.Editor.Util;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CamLib.Editor
@@ -8,7 +6,7 @@ namespace CamLib.Editor
     [CustomPropertyDrawer(typeof(AudioClipButtonsAttribute))]
     public class AudioClipPropertyDrawer : PropertyDrawer
     {
-        private const float PLAY_BUTTON_WIDTH = 40;
+        private const float PLAY_BUTTON_WIDTH = 30;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -43,16 +41,16 @@ namespace CamLib.Editor
                 //Play
                 Rect playButtonRect = new Rect(
                     position.x + position.width - (buttonWidth * 2) + 1,
-                    position.y,
+                    position.y-1,
                     PLAY_BUTTON_WIDTH - 1,
-                    position.height);
+                    position.height+2);
 
                 //Stop
                 Rect stopButtonRect = new Rect(
                     position.x + position.width - buttonWidth + 1,
-                    position.y,
+                    position.y-1,
                     PLAY_BUTTON_WIDTH - 1,
-                    position.height);
+                    position.height+2);
 
 
                 //void DrawRects()

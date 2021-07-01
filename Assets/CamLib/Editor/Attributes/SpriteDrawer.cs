@@ -1,12 +1,10 @@
 using System.Linq;
-using CamLib.Attributes;
 using UnityEditor;
 using UnityEngine;
 
 namespace CamLib.Editor
 {
     [CustomPropertyDrawer(typeof(SpriteRenderAttribute))]
-    [CanEditMultipleObjects]
     public class SpritePropertyDrawer : PropertyDrawer
     {
         private float BORDER_WIDTH = 1;
@@ -18,19 +16,25 @@ namespace CamLib.Editor
         {
             50, 16, 14, 12, 10, 8, 6, 4, 2
         };
-        
-        private bool CanDrawPreviewImage => _tex != null && Selection.objects.Distinct().Count() == 1;
-        
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float height = base.GetPropertyHeight(property, label);
             
             //if no object assigned, do default height
-            if (property.propertyType != SerializedPropertyType.ObjectReference) return height;
+            if (property.objectReferenceValue == null)
+            {
+                return height;
+            }
+            
+            TryCacheTex(property);
             
             //else add more height based on the image's height
 
-            if (!CanDrawPreviewImage) return height;
+            if (_tex == null || property.hasMultipleDifferentValues)
+            {
+                return height;
+            }
             
             height += 2 + BORDER_WIDTH * 2;
             height += _tex.height;
@@ -44,65 +48,49 @@ namespace CamLib.Editor
                 height = base.GetPropertyHeight(property, label)
             };
 
-            if (_cachedOriginalTexture == null || _cachedOriginalTexture != GetAssetPreview(property))
-            {
-                _cachedOriginalTexture = GetAssetPreview(property);
+            EditorGUI.PropertyField(position, property, label);
+            property.serializedObject.ApplyModifiedProperties();
+            
+            TryCacheTex(property);
+            DrawPreviewImage(position);
+        }
 
-                int scale = IdealScale(_cachedOriginalTexture);
-                _tex = ScaledSize(_cachedOriginalTexture, scale);
+        private void DrawPreviewImage(Rect position) //image (only appears when is assigned)
+        {
+            if (_tex == null)
+            {
+                return;
+            }
+                
+            Rect imageRect = new Rect(position)
+            {
+                x = position.x + EditorGUIUtility.labelWidth + BORDER_WIDTH + 2,
+                y = position.y + EditorGUIUtility.singleLineHeight + BORDER_WIDTH + 2,
+                width = _tex.width,
+                height = _tex.height,
+            };
+
+            Rect borderRect = new Rect
+            {
+                position = imageRect.position - Vector2.one * BORDER_WIDTH,
+                size = imageRect.size + Vector2.one * BORDER_WIDTH * 2,
+            };
+                
+            EditorGUI.DrawTextureAlpha(borderRect, Texture2D.whiteTexture);
+            GUI.DrawTexture(imageRect, GetCheckerboardTexture((int)imageRect.width, (int)imageRect.height));
+            GUI.DrawTexture(imageRect, _tex, ScaleMode.ScaleAndCrop, true);
+        }
+
+        private void TryCacheTex(SerializedProperty property)
+        {
+            if (_cachedOriginalTexture != null && _cachedOriginalTexture == GetAssetPreview(property))
+            {
+                return;
             }
             
-            DrawObjectField();
-            DrawPreviewImage();
-
-            void DrawObjectField()
-            {
-                Rect objectFieldRect = new Rect(position)
-                {
-                    height = base.GetPropertyHeight(property, label)
-                };
-
-                if (property.hasMultipleDifferentValues)
-                {
-                    GUI.enabled = false;
-                    EditorGUI.ObjectField(objectFieldRect, "No Multi-Editing", null, typeof(Sprite), false);
-                    GUI.enabled = true;
-                    return;
-                }
-                
-                EditorGUI.BeginChangeCheck();
-                {
-                    property.objectReferenceValue = EditorGUI.ObjectField(objectFieldRect, label, property.objectReferenceValue,
-                        typeof(Sprite), false);
-                }
-                if (EditorGUI.EndChangeCheck())
-                {
-                    property.serializedObject.ApplyModifiedProperties();
-                }
-            }
-            
-            void DrawPreviewImage() //image (only appears when is assigned)
-            {
-                if (!CanDrawPreviewImage) return;
-                
-                Rect imageRect = new Rect(position)
-                {
-                    x = position.x + EditorGUIUtility.labelWidth + BORDER_WIDTH + 2,
-                    y = position.y + EditorGUIUtility.singleLineHeight + BORDER_WIDTH + 2,
-                    width = _tex.width,
-                    height = _tex.height,
-                };
-
-                Rect borderRect = new Rect
-                {
-                    position = imageRect.position - Vector2.one * BORDER_WIDTH,
-                    size = imageRect.size + Vector2.one * BORDER_WIDTH * 2,
-                };
-                
-                EditorGUI.DrawTextureAlpha(borderRect, Texture2D.whiteTexture);
-                GUI.DrawTexture(imageRect, GetCheckerboardTexture((int)imageRect.width, (int)imageRect.height));
-                GUI.DrawTexture(imageRect, _tex, ScaleMode.ScaleAndCrop, true);
-            }
+            _cachedOriginalTexture = GetAssetPreview(property);
+            int scale = IdealScale(_cachedOriginalTexture);
+            _tex = ScaledSize(_cachedOriginalTexture, scale);
         }
 
         private Texture2D GetCheckerboardTexture(int width, int height)
