@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CamLib;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -25,5 +26,37 @@ namespace Scenes
         
         [SerializeField, MinMaxRange(0, 10)] private Vector2 _minMax;
         [SerializeField, MinMaxRange(0, 10)] private float _minMaxImproper;
+
+        //[SerializeField] private Inside _inside;
+
+        [SerializeField] private List<Inside> _insides;
+
+
+        [System.Serializable]
+        public class Test
+        {
+            [AudioClipButtons] public AudioClip _clip;
+            [SpriteRender] public Sprite _spr;
+        }
+
+        [System.Serializable]
+        public class Inside
+        { 
+            public List<Test> _tests;
+            public Inside1 _inside;
+        }
+        [System.Serializable]
+        public class Inside1
+        {
+            public List<Test> _tests;
+            public Inside2 _inside2;
+        }
+        [System.Serializable]
+        public class Inside2
+        {
+            public List<Test> _inside3;
+        }
+
+
     }
 }

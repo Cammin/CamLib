@@ -1,12 +1,10 @@
-using System;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 namespace CamLib.Editor
 {
     [CustomPropertyDrawer(typeof(SpriteRenderAttribute))]
-    public class SpritePropertyDrawer : PropertyDrawer
+    public class SpriteRenderAttributeDrawer : PropertyDrawer
     {
         private float BORDER_WIDTH = 1;
 

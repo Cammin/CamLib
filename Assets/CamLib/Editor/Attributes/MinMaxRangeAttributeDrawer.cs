@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CamLib.Editor
@@ -14,7 +13,14 @@ namespace CamLib.Editor
         {
             if (property.propertyType != SerializedPropertyType.Vector2)
             {
-                EditorGUI.LabelField(position, $"{label.text} is not a Vector2. {(nameof(MinMaxRangeAttribute))}");
+                GUIContent error = new GUIContent()
+                {
+                    text = label.text,
+                    tooltip = "Invalid usage of [MinMaxRange].\nOnly use on Vector2",
+                    image = EditorGUIUtil.GetUnityIcon("console.erroricon.sml", "")
+                };
+                
+                EditorGUI.LabelField(position, error);
                 return;
             }
             

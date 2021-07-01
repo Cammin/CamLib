@@ -152,8 +152,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f84f8d4acf3f0b419f46ae84bdf427a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 9efd4f2c1cc7fee4c8936d38cd189cb3, type: 3}
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _readonlyValue: 0
+  _bool2:
+    x: 0
+    y: 0
+  _clip: {fileID: 8300000, guid: 9efd4f2c1cc7fee4c8936d38cd189cb3, type: 3}
+  _clipImproper: {fileID: 0}
+  _sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  _tex2D: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+  _tex: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
+  _texImproper: {fileID: 0}
+  _minMax: {x: 0, y: 9.2}
+  _minMaxImproper: 0
+  _insides:
+  - _tests:
+    - _clip: {fileID: 8300000, guid: 9efd4f2c1cc7fee4c8936d38cd189cb3, type: 3}
+      _spr: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+    - _clip: {fileID: 0}
+      _spr: {fileID: 0}
+    _inside:
+      _tests:
+      - _clip: {fileID: 8300000, guid: 9efd4f2c1cc7fee4c8936d38cd189cb3, type: 3}
+        _spr: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+      _inside2:
+        _inside3:
+        - _clip: {fileID: 8300000, guid: 9efd4f2c1cc7fee4c8936d38cd189cb3, type: 3}
+          _spr: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+        - _clip: {fileID: 8300000, guid: 9efd4f2c1cc7fee4c8936d38cd189cb3, type: 3}
+          _spr: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!4 &309705764
 Transform:
   m_ObjectHideFlags: 0

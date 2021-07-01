@@ -1,16 +1,30 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CamLib.Editor
 {
     [CustomPropertyDrawer(typeof(AudioClipButtonsAttribute))]
-    public class AudioClipPropertyDrawer : PropertyDrawer
+    public class AudioClipButtonsAttributeDrawer : PropertyDrawer
     {
         private const float PLAY_BUTTON_WIDTH = 30;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            if (!property.type.Contains(nameof(AudioClip)))
+            {
+                GUIContent error = new GUIContent()
+                {
+                    text = label.text,
+                    tooltip = $"Invalid usage of {nameof(AudioClipButtonsAttribute)}.\nOnly use on {nameof(AudioClip)}",
+                    image = EditorGUIUtil.GetUnityIcon("console.erroricon.sml", "")
+                };
+                
+                EditorGUI.LabelField(position, error);
+                return;
+            }
+            
+            
+            
             // assigning selection change may break the editor
             Selection.selectionChanged = OnLostObjectFocus;
 
