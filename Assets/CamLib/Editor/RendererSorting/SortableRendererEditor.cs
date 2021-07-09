@@ -1,5 +1,4 @@
-﻿using CamLib.RendererSorting;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace CamLib.Editor
 {

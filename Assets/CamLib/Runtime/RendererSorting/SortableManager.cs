@@ -3,7 +3,7 @@ using UnityEngine;
 
 //https://answers.unity.com/questions/620318/sprite-layer-order-determined-by-y-value.html
 
- namespace CamLib.RendererSorting
+ namespace CamLib
  {
      public class SortableManager : MonoBehaviour
      {

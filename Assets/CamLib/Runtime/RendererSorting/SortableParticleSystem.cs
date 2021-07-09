@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CamLib.RendererSorting
+namespace CamLib
 {
     public class SortableParticleSystem : SortableBase<ParticleSystem>
     {

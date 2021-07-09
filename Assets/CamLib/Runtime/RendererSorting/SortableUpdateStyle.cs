@@ -1,4 +1,4 @@
-﻿namespace CamLib.RendererSorting
+﻿namespace CamLib
 {
     internal enum SortableUpdateStyle
     {

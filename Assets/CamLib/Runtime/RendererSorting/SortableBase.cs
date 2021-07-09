@@ -4,7 +4,7 @@ using Object = UnityEngine.Object;
 
 #pragma warning disable 0649
 
-namespace CamLib.RendererSorting
+namespace CamLib
 {
     public abstract class SortableBase<T> : MonoBehaviour, ISortable where T : Component
     {

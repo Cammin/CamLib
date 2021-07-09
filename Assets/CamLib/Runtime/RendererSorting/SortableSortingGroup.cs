@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Rendering;
 
-namespace CamLib.RendererSorting
+namespace CamLib
 {
     public class SortableSortingGroup : SortableBase<SortingGroup>
     {
