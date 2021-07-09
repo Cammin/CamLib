@@ -2,7 +2,7 @@
 
 namespace CamLib
 {
-    public static class SnapTool
+    public static class SnapUtil
     {
         private const float DEFAULT_SNAP_VALUE = 0.0625f;
         

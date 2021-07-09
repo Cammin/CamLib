@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace CamLib.Editor
 {
+    //this should try and mimic exactly how the spriterenderer's flip x/y should look
+    //https://github.com/Unity-Technologies/UnityCsReference/blob/61f92bd79ae862c4465d35270f9d1d57befd1761/Editor/Mono/Inspector/SpriteRendererEditor.cs
     [CustomPropertyDrawer(typeof(Bool2))]
     public class Bool2Editor : PropertyDrawer
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CamLib.Music
+namespace CamLib
 {
     public class MusicLoop : MonoBehaviour
     {

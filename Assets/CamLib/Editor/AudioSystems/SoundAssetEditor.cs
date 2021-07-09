@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CamLib.SoundAssets.Editor
+namespace CamLib.Editor.AudioSystems
 {
     [CustomEditor(typeof(SfxAsset), true)]
     public class SoundAssetEditor : UnityEditor.Editor

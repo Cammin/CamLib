@@ -1,5 +1,4 @@
-﻿using CamLib.SoundAssets;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CamLib
 {

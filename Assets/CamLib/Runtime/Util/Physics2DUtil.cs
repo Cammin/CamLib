@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CamLib
 {
-    public static class Physics2DTool
+    public static class Physics2DUtil
     {
         public static RaycastHit2D BoxColliderCastNonAlloc(BoxCollider2D coll, Vector2 dir)
         {

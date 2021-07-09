@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CamLib.SoundAssets
+namespace CamLib
 {
     [CreateAssetMenu(menuName = CamLibAssetPath.SFX_PATH + nameof(SfxAssetSimple))]
     public class SfxAssetSimple : SfxAsset

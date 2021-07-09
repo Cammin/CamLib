@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CamLib.SoundAssets
+namespace CamLib
 {
     public abstract class SfxAsset : ScriptableObject
     {
