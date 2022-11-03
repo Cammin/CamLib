@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "com.needle.compilation-visualizer": "1.4.0",
-    "com.unity.ide.rider": "3.0.7",
-    "com.unity.render-pipelines.universal": "11.0.0",
-    "com.unity.test-framework": "1.1.29",
+    "com.unity.ide.rider": "3.0.15",
+    "com.unity.render-pipelines.universal": "13.1.8",
+    "com.unity.test-framework": "1.1.31",
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
