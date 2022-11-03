@@ -14,7 +14,6 @@ jobs:
                     #- playmode
                     - editmode
                 unityVersion:
-                    - 2021.1.28f1
                     - 2021.2.19f1
                     - 2021.3.11f1
                     - 2022.1.20f1
@@ -66,7 +65,6 @@ jobs:
                     - StandaloneWindows
                     #- WebGL
                 unityVersion:
-                    - 2021.1.28f1
                     - 2021.2.19f1
                     - 2021.3.11f1
                     - 2022.1.20f1
