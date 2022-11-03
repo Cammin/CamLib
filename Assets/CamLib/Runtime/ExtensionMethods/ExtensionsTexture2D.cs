@@ -1,9 +1,11 @@
 ﻿using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace CamLib
 {
-    public static class Texture2DExtensions
+    [PublicAPI]
+    public static class ExtensionsTexture2D
     {
         public static Color32 AverageColor(this Texture2D tex)
         {

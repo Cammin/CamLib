@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace CamLib
 {
-    public static class ColorExtensions
+    [PublicAPI]
+    public static class ExtensionsColor
     {
         public static Color Alpha(this Color color, float a)
         {

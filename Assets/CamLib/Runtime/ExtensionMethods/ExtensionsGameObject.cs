@@ -1,8 +1,10 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace CamLib
 {
-    public static class GameObjectExtensions
+    [PublicAPI]
+    public static class ExtensionsGameObject
     {
         public static GameObject CreateChildGameObject(this GameObject parent, string name = "New GameObject")
         {

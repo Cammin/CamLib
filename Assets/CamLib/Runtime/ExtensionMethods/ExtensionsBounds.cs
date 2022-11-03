@@ -1,7 +1,9 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace CamLib
 {
+    [PublicAPI]
     public static class BoundsExtensions
     {
         public static Vector3 RandomPoint(this Bounds bounds) 

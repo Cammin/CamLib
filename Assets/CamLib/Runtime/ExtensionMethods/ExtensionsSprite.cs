@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace CamLib
 {
-    public static class SpriteExtensions
+    [PublicAPI]
+    public static class ExtensionsSprite
     {
         public static bool IsPivotPixelPerfect(this Sprite sprite)
         {

@@ -182,7 +182,7 @@ namespace CamLib
             float dir = Mathf.Sign(distance);
             
             int journeys = Mathf.FloorToInt(Mathf.Abs(distance / textureSizeInUnits));
-            journeys += factor.IsNegative() ? 1 : 0;
+            journeys += factor < 0 ? 1 : 0;
             
             float targetOffset = (distance * factor) % textureSizeInUnits;
             start += (textureSizeInUnits * dir * journeys);

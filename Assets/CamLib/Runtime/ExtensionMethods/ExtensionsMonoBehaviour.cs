@@ -1,11 +1,13 @@
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace CamLib
 {
-    public static class MonoBehaviourExtensions
+    [PublicAPI]
+    public static class ExtensionsMonoBehaviour
     {
-        public static Coroutine RestartCoroutine(this MonoBehaviour behaviour, Coroutine coroutine, IEnumerator routine)
+        public static Coroutine TryRestartCoroutine(this MonoBehaviour behaviour, Coroutine coroutine, IEnumerator routine)
         {
             if (coroutine != null)
             {

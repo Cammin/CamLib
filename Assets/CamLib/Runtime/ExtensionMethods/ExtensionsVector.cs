@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace CamLib
 {
-    public static class VectorExtensions
+    [PublicAPI]
+    public static class ExtensionsVector
     {
         public static Vector2 Magnitude(this Vector2 vector, float newMagnitude)
         {

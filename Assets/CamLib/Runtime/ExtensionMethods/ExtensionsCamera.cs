@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace CamLib
 {
+    [PublicAPI]
     public static class CameraExtensions
     {
         public static Vector2 OrthographicSize(this Camera cam)

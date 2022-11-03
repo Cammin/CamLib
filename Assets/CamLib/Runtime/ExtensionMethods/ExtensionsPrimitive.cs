@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace CamLib
 {
-    public static class NumericalExtensions
+    [PublicAPI]
+    public static class ExtensionsPrimitive
     {
         private const float THRESHOLD = 0.001f;
         
@@ -21,11 +23,6 @@ namespace CamLib
             return Math.Abs(val - other) < THRESHOLD;
         }
         
-        public static bool IsNegative(this float val)
-        {
-            return val < 0;
-        }
-
         public static bool IsWhole(this float val)
         {
             return Math.Abs(val % 1f) < THRESHOLD;
