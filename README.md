@@ -1,5 +1,5 @@
 [![OpenUPM](https://img.shields.io/npm/v/com.cammin.camlib?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.cammin.camlib/)
-[![Compatibility](https://img.shields.io/badge/-2021.1+-11191F?logo=Unity)](https://unity3d.com/get-unity/download/archive)
+[![Compatibility](https://img.shields.io/badge/-2021.2+-11191F?logo=Unity)](https://unity3d.com/get-unity/download/archive)
 [![GitHub Repo stars](https://img.shields.io/github/stars/Cammin/CamLib?color=%23dca&label=%E2%AD%90)](https://github.com/Cammin/CamLib)
 
 My personal utilities package.  

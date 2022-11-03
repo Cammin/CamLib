@@ -15,7 +15,7 @@
     "versionDefines": [
         {
             "name": "com.unity.render-pipelines.universal",
-            "expression": "",
+            "expression": "12.1.4",
             "define": "CAMLIB_URP"
         }
     ],
