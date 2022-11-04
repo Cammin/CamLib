@@ -2,12 +2,12 @@
 
 namespace CamLib
 {
-    public class ParallaxBackgroundLayerInstance : MonoBehaviour
+    public class ParallaxLayerInstance : MonoBehaviour
     {
         private const float WRAP_SCALE = 4;
         
         [SerializeField] private SpriteRenderer _render = null;
-        [SerializeField] private ParallaxBackgroundLayer _properties = null;
+        [SerializeField] private ParallaxDataLayer _properties = null;
         
         private Camera _cam;
 
@@ -17,7 +17,7 @@ namespace CamLib
         private Vector2 _autoScroll;
         private Vector2 _textureUnitSize = Vector2.one;
 
-        public void SetProperties(ParallaxBackgroundLayer pairing) => _properties = pairing;
+        public void SetProperties(ParallaxDataLayer pairing) => _properties = pairing;
         public void SetSortingOrder(int order) => _render.sortingOrder = order;
         public void SetCamera(Camera cam) => _cam = cam;
         public void SetAlpha(float pairingImageAlpha)
@@ -78,9 +78,9 @@ namespace CamLib
         
         private void SnapToCameraBounds(Vector2 textureUnitOffset, Vector2 cameraUnitOffset)
         {
-            BoundsSnapSide snapSide = _properties.SnapSide;
+            ParallaxSnapSide snapSide = _properties.SnapSide;
             
-            if (snapSide == BoundsSnapSide.None)
+            if (snapSide == ParallaxSnapSide.None)
             {
                 return;
             }
@@ -96,19 +96,19 @@ namespace CamLib
             Vector2 originOffset = textureUnitOffset / 2;
             switch (snapSide)
             {
-                case BoundsSnapSide.Left:
+                case ParallaxSnapSide.Left:
                     newOriginPos.x = area.xMin + originOffset.x;
                     break;
                     
-                case BoundsSnapSide.Right:
+                case ParallaxSnapSide.Right:
                     newOriginPos.x = area.xMax - originOffset.x;
                     break;
                 
-                case BoundsSnapSide.Top:
+                case ParallaxSnapSide.Top:
                     newOriginPos.y = area.yMax - originOffset.y;
                     break;
                 
-                case BoundsSnapSide.Bottom:
+                case ParallaxSnapSide.Bottom:
                     newOriginPos.y = area.yMin + originOffset.y;
                     break;
             }
@@ -118,13 +118,13 @@ namespace CamLib
             float targetOffsetDirection = 0;
             switch (snapSide)
             {
-                case BoundsSnapSide.Bottom:
-                case BoundsSnapSide.Left:
+                case ParallaxSnapSide.Bottom:
+                case ParallaxSnapSide.Left:
                     targetOffsetDirection = 1;
                     break;
                     
-                case BoundsSnapSide.Top:
-                case BoundsSnapSide.Right:
+                case ParallaxSnapSide.Top:
+                case ParallaxSnapSide.Right:
                     targetOffsetDirection = -1;
                     break;
             }
@@ -134,13 +134,13 @@ namespace CamLib
             
             switch (snapSide)
             {
-                case BoundsSnapSide.Top:
-                case BoundsSnapSide.Bottom:
+                case ParallaxSnapSide.Top:
+                case ParallaxSnapSide.Bottom:
                     if (_properties.Infinite.y) Debug.LogWarning("Snapping up or down won't look correct if the infinite's y setting is on.");
                     break;
                     
-                case BoundsSnapSide.Left:
-                case BoundsSnapSide.Right:
+                case ParallaxSnapSide.Left:
+                case ParallaxSnapSide.Right:
                     if (_properties.Infinite.x) Debug.LogWarning("Snapping left or right won't look correct if the infinite's x setting is on.");
                     break;
             }
@@ -151,7 +151,7 @@ namespace CamLib
             Vector2 camPos = _cam.transform.position;
 
             Vector2 scrollSpeed = _properties.AutoScrollSpeed;
-            scrollSpeed.y /= 2; //add extra autoscroll speed to compensate for an unknown, unexpected extra half-y value
+            scrollSpeed.y *= 0.5f; //add extra autoscroll speed to compensate for an unknown, unexpected extra half-y value
             _autoScroll += scrollSpeed * Time.deltaTime;
 
             Vector2 startPos = _origin + _autoScroll;

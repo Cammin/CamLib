@@ -1,6 +1,6 @@
 ﻿namespace CamLib
 {
-    public static class ParallaxBackgroundConstPath
+    internal static class ParallaxConsts
     {
         public const string CREATE_ASSET_PATH = "CamLib/Background/";
     }

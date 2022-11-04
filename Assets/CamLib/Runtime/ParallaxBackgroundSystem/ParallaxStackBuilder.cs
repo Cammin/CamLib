@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace CamLib
 {
-    public class ParallaxBackgroundStackFactory : MonoBehaviour
+    public class ParallaxStackBuilder : MonoBehaviour
     {
         [SerializeField] private Camera _camera;
-        [SerializeField] private ParallaxBackgroundLayerInstance _instanceTemplate = null;
-        [SerializeField] private ParallaxBackgroundStack _stack;
+        [SerializeField] private ParallaxLayerInstance _instanceTemplate = null;
+        [SerializeField] private ParallaxDataStack _stack;
         private void Start()
         {
             MakeLayers(_stack); //todo maybe control this outside the factory? for now, its run by itself
         }
 
-        public void MakeLayers(ParallaxBackgroundStack stack)
+        public void MakeLayers(ParallaxDataStack stack)
         {
             if (stack == null)
             {
@@ -36,16 +36,16 @@ namespace CamLib
 
             for (int i = 0; i < stack.Backgrounds.Count; i++)
             {
-                ParallaxBackgroundLayer pairing = stack.Backgrounds[i];
+                ParallaxDataLayer pairing = stack.Backgrounds[i];
                 MakeLayer(pairing, i);
             }
         }
 
-        private void MakeLayer(ParallaxBackgroundLayer pairing, int i)
+        private void MakeLayer(ParallaxDataLayer pairing, int i)
         {
             string layerName = SortingLayer.IDToName(pairing.Layer);
             
-            ParallaxBackgroundLayerInstance bg = Instantiate(_instanceTemplate, transform);
+            ParallaxLayerInstance bg = Instantiate(_instanceTemplate, transform);
             bg.gameObject.name = $"{layerName} {i}";
             bg.SetProperties(pairing);
             bg.SetSortingOrder(i);

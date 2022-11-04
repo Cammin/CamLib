@@ -1,6 +1,6 @@
 ﻿namespace CamLib
 {
-    public enum BoundsSnapSide
+    public enum ParallaxSnapSide
     {
         None,
         Bottom,

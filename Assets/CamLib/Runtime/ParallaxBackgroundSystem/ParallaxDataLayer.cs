@@ -2,8 +2,8 @@
 
 namespace CamLib
 {
-    [CreateAssetMenu(fileName = nameof(ParallaxBackgroundLayer), menuName = ParallaxBackgroundConstPath.CREATE_ASSET_PATH + nameof(ParallaxBackgroundLayer), order = 0)]
-    public class ParallaxBackgroundLayer : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(ParallaxDataLayer), menuName = ParallaxConsts.CREATE_ASSET_PATH + nameof(ParallaxDataLayer), order = 0)]
+    public class ParallaxDataLayer : ScriptableObject
     {
         [SpriteRender]
         [SerializeField] private Sprite _backgroundSprite = null;
@@ -12,7 +12,7 @@ namespace CamLib
         
         [Header("Alignment/Movement")]
         [Tooltip("Make this layer anchor to a specific side of the level's bounds (if available)")]
-        [SerializeField] private BoundsSnapSide _snapSide = BoundsSnapSide.None;
+        [SerializeField] private ParallaxSnapSide _snapSide = ParallaxSnapSide.None;
         
         [SerializeField] private Vector2 _autoScrollSpeed = Vector2.zero;
         [SerializeField] private Bool2 _infinite = new Bool2(true, false);
@@ -25,7 +25,7 @@ namespace CamLib
         public Vector2 ParallaxEffectMultiplier => new Vector2(_parallaxEffectXMultiplier, _parallaxEffectYMultiplier);
         public Bool2 Infinite => _infinite;
         public Vector2 AutoScrollSpeed => _autoScrollSpeed;
-        public BoundsSnapSide SnapSide => _snapSide;
+        public ParallaxSnapSide SnapSide => _snapSide;
         public float ImageAlpha => _imageAlpha;
     }
 }
