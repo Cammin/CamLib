@@ -6,14 +6,10 @@ namespace CamLib
     public class ParallaxStackBuilder : MonoBehaviour
     {
         [SerializeField] private Camera _camera;
-        [SerializeField] private ParallaxLayerInstance _instanceTemplate = null;
-        [SerializeField] private ParallaxDataStack _stack;
-        private void Start()
-        {
-            MakeLayers(_stack); //todo maybe control this outside the factory? for now, its run by itself
-        }
+        //having a prefab here means that we could configure the sprite renderer in any way we want
+        [SerializeField] private ParallaxLayerInstance _prefab = null;
 
-        public void MakeLayers(ParallaxDataStack stack)
+        public void MakeLayers(ParallaxAssetStack stack)
         {
             if (stack == null)
             {
@@ -21,7 +17,7 @@ namespace CamLib
                 return;
             }
 
-            if (_camera == null)
+            if (_prefab == null)
             {
                 Debug.LogWarning("Tried making background, but Prefab was null.");
                 return;
@@ -36,16 +32,16 @@ namespace CamLib
 
             for (int i = 0; i < stack.Backgrounds.Count; i++)
             {
-                ParallaxDataLayer pairing = stack.Backgrounds[i];
+                ParallaxAssetLayer pairing = stack.Backgrounds[i];
                 MakeLayer(pairing, i);
             }
         }
 
-        private void MakeLayer(ParallaxDataLayer pairing, int i)
+        private void MakeLayer(ParallaxAssetLayer pairing, int i)
         {
             string layerName = SortingLayer.IDToName(pairing.Layer);
             
-            ParallaxLayerInstance bg = Instantiate(_instanceTemplate, transform);
+            ParallaxLayerInstance bg = Instantiate(_prefab, transform);
             bg.gameObject.name = $"{layerName} {i}";
             bg.SetProperties(pairing);
             bg.SetSortingOrder(i);

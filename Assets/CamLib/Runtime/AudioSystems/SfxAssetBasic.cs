@@ -2,8 +2,8 @@
 
 namespace CamLib
 {
-    [CreateAssetMenu(menuName = CamLibAssetPath.SFX_PATH + nameof(SfxAssetVanilla))]
-    public class SfxAssetVanilla : SfxAsset
+    [CreateAssetMenu(menuName = Consts.PATH + nameof(SfxAssetBasic))]
+    public class SfxAssetBasic : SfxAsset
     {
         [SerializeField] private AudioClip _clip = null;
         
@@ -11,7 +11,7 @@ namespace CamLib
         {
             if (_clip == null)
             {
-                Debug.LogError("No Sound Assigned!");
+                Debug.LogError("No Sound Assigned!", this);
                 return;
             }
             

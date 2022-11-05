@@ -3,7 +3,7 @@
 namespace CamLib
 {
     // Use LOG_RELEASE_DISABLE in player settings to make this work
-    public static class DebugLogUtil
+    internal static class DebugLogEnabled
     {
 #if LOG_RELEASE_DISABLE
         [RuntimeInitializeOnLoadMethod]

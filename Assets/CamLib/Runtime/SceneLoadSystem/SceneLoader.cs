@@ -8,17 +8,14 @@ namespace CamLib
 {
     public class SceneLoader : Singleton<SceneLoader>
     {
-
         [SerializeField] private ThreadPriority _loadPriority = ThreadPriority.Normal;
         [SerializeField] private Object _loadingScreenScene = null;
         
-        public static Object LoadingScreenScene => Instance._loadingScreenScene;
-        public static ThreadPriority LoadPriority => Instance._loadPriority;
+        public Object LoadingScreenScene => _loadingScreenScene;
+        public ThreadPriority LoadPriority => _loadPriority;
         
-        
-        public static Action<float> OnProgressMade;
-        
-        
+        public event Action<float> OnProgressMade;
+
         private static readonly LoadSceneParameters LoadingScreen = new LoadSceneParameters
         {
             loadSceneMode = LoadSceneMode.Additive,
@@ -31,7 +28,7 @@ namespace CamLib
             localPhysicsMode = LocalPhysicsMode.None
         };
 
-        public static IEnumerator LoadScene(string newScene)
+        public IEnumerator LoadScene(string newScene)
         {
             ThreadPriority originalPriority = Application.backgroundLoadingPriority;
             Application.backgroundLoadingPriority = LoadPriority;
@@ -58,21 +55,21 @@ namespace CamLib
         }
 
 
-        private static IEnumerator Load(string scene, LoadSceneParameters loadParams)
+        private IEnumerator Load(string scene, LoadSceneParameters loadParams)
         {
             Debug.Log($"Load {scene}");
             yield return AsyncScene(SceneManager.LoadSceneAsync(scene, loadParams));
             Debug.Log($"Loaded {scene}");
         }
 
-        private static IEnumerator Unload(string scene)
+        private IEnumerator Unload(string scene)
         {
             Debug.Log($"Unload {scene}");
             yield return AsyncScene(SceneManager.UnloadSceneAsync(scene));
             Debug.Log($"Unloaded {scene}");
         }
 
-        private static IEnumerator AsyncScene(AsyncOperation operation)
+        private IEnumerator AsyncScene(AsyncOperation operation)
         {
             float previousProgress = 0;
             while (!operation.isDone)
@@ -86,7 +83,7 @@ namespace CamLib
 
                 yield return null;
             }
+            OnProgressMade?.Invoke(1);
         }
-        
     }
 }

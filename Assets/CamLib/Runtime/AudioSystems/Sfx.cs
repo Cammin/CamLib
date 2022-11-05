@@ -1,31 +1,34 @@
 ﻿using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Pool;
 
 namespace CamLib
 {
     public static class Sfx
     {
-        private static readonly ComponentPooler<SfxInstance> Pooler = new ComponentPooler<SfxInstance>("Pooled Audio Source");
-        private static GameObject _poolerGameObject;
+        private static ObjectPool<SfxInstance> _pool;
+        private static GameObject _root;
 
-        private static GameObject GameObj
-        {
-            get
-            {
-                if (_poolerGameObject != null)
-                {
-                    return _poolerGameObject;
-                }
-
-                _poolerGameObject = new GameObject("SFX Pooler");
-                Object.DontDestroyOnLoad(_poolerGameObject);
-                return _poolerGameObject;
-            }
-        }
-        
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetVars()
+        private static void SetupVars()
         {
-            _poolerGameObject = null;
+            _root = new GameObject("SfxPool");
+            Object.DontDestroyOnLoad(_root);
+
+            _pool = new ObjectPool<SfxInstance>(() =>
+                {
+                    GameObject obj = new GameObject($"Sfx{_root.transform.childCount}");
+                    SfxInstance instance = obj.AddComponent<SfxInstance>();
+                    obj.transform.SetParent(_root.transform);
+                    return instance;
+                }, instance =>
+                {
+                    instance.gameObject.SetActive(true);
+                }, instance =>
+                {
+                    instance.gameObject.SetActive(false);
+                }, 
+                Object.Destroy, true, AudioSettings.GetConfiguration().numRealVoices);
         }
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace CamLib
         /// </summary>
         public static SfxInstance Play(SfxAsset sfx)
         {
-            return PlayAtTransform(sfx, GameObj.transform);
+            return PlayAtTransform(sfx, _root.transform);
         }
 
         /// <summary>
@@ -41,11 +44,11 @@ namespace CamLib
         /// </summary>
         public static SfxInstance Play(SfxAsset sfx, Vector3 position)
         {
-            return PlayAtTransformPosition(sfx, GameObj.transform, position);
+            return PlayAtTransformPosition(sfx, _root.transform, position);
         }
 
         /// <summary>
-        /// Play in transform. This would not be maintained through a scene change.
+        /// Play in transform.
         /// </summary>
         public static SfxInstance Play(SfxAsset sfx, Transform parentTo)
         {
@@ -53,7 +56,7 @@ namespace CamLib
         }
 
         /// <summary>
-        /// Play in transform, at a position. This would not be maintained through a scene changed.
+        /// Play in transform, at a position.
         /// </summary>
         public static SfxInstance Play(SfxAsset sfx, Transform parentTo, Vector3 position)
         {
@@ -67,14 +70,10 @@ namespace CamLib
 
         private static SfxInstance PlayAtTransformPosition(SfxAsset sfx, Transform parentTo, Vector3 position)
         {
-            SfxInstance instance = Pooler.Get();
-            instance.Pool = Pooler.Pool;
+            SfxInstance instance = _pool.Get();
+            instance.SetPool(_pool);
             
-            Transform transform = instance.transform;
-            transform.SetParent(parentTo, true);
-            transform.position = position;
-            
-            instance.Play(sfx);
+            instance.Play(sfx, parentTo, position);
             return instance;
         }
     }

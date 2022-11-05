@@ -2,8 +2,8 @@
 
 namespace CamLib
 {
-    [CreateAssetMenu(fileName = nameof(ParallaxDataLayer), menuName = ParallaxConsts.CREATE_ASSET_PATH + nameof(ParallaxDataLayer), order = 0)]
-    public class ParallaxDataLayer : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(ParallaxAssetLayer), menuName = ParallaxConsts.CREATE_ASSET_PATH + nameof(ParallaxAssetLayer), order = 0)]
+    public class ParallaxAssetLayer : ScriptableObject
     {
         [SpriteRender]
         [SerializeField] private Sprite _backgroundSprite = null;

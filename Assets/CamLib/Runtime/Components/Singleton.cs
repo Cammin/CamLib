@@ -4,10 +4,9 @@ namespace CamLib
 {
     public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
-        [SerializeField] private bool _dontDestroyOnLoad;
         private static T _instance = null;
         
-        protected static T Instance
+        public static T Instance
         {
             get
             {
@@ -26,6 +25,7 @@ namespace CamLib
                 //create if not found
                 GameObject obj = new GameObject(typeof(T).Name);
                 _instance = obj.AddComponent<T>();
+                Debug.LogWarning("A singleton instance was created; didn't exist in the scene.", _instance.gameObject);
                 return _instance;
             }
         }
@@ -38,20 +38,13 @@ namespace CamLib
 
         protected virtual void Awake()
         {
-            if (_instance == null)
+            if (_instance != null)
             {
-                _instance = this as T;
+                Debug.LogWarning($"Singleton instance already exists! {_instance.name}");
+                return;
+            }
 
-                if (_dontDestroyOnLoad)
-                {
-                    DontDestroyOnLoad(gameObject);
-                }
-            }
-            else
-            {
-                Debug.LogWarning($"Singleton instance already exists; destroying self {_instance.name}");
-                Destroy(gameObject);
-            }
+            _instance = this as T;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace CamLib
         private const float WRAP_SCALE = 4;
         
         [SerializeField] private SpriteRenderer _render = null;
-        [SerializeField] private ParallaxDataLayer _properties = null;
+        [SerializeField] private ParallaxAssetLayer _properties = null;
         
         private Camera _cam;
 
@@ -17,7 +17,7 @@ namespace CamLib
         private Vector2 _autoScroll;
         private Vector2 _textureUnitSize = Vector2.one;
 
-        public void SetProperties(ParallaxDataLayer pairing) => _properties = pairing;
+        public void SetProperties(ParallaxAssetLayer pairing) => _properties = pairing;
         public void SetSortingOrder(int order) => _render.sortingOrder = order;
         public void SetCamera(Camera cam) => _cam = cam;
         public void SetAlpha(float pairingImageAlpha)

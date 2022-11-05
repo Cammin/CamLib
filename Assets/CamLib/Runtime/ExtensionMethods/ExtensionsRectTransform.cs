@@ -15,6 +15,14 @@ namespace CamLib
             Rect rect = rectT.rect;
             Vector2 size = new Vector2(lossy.x * rect.size.x, lossy.y * rect.size.y);
             return new Rect(bottomLeft, size);
+        }        
+        public static Vector2 RandomPoint(this RectTransform rectT)
+        {
+            Rect bounds = rectT.rect;
+            return new Vector2(
+                Random.Range(bounds.min.x, bounds.max.x),
+                Random.Range(bounds.min.y, bounds.max.y)
+            );
         }
     }
 }

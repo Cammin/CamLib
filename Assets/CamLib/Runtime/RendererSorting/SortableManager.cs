@@ -7,17 +7,14 @@ using UnityEngine;
  {
      public class SortableManager : MonoBehaviour
      {
-         [SerializeField] private float _updateFrequency = 0.1f;
- 
-         private readonly GameTimer _updateTimer = new GameTimer();
+         [SerializeField] private int onlyUpdateCountPerFrame = 1;
 
-         private static List<ISortable> _sortables = null;
+         private static HashSet<ISortable> _sortables = null;
 
          private void Start()
          {
              FormulateManagedSortables();
              UpdateSortOrder();
-             SetTimer();
          }
          
          private void OnDisable()
@@ -35,14 +32,11 @@ using UnityEngine;
                 includedObjects += "\n";
              }
 
-             Debug.Log($"{nameof(SortableManager)}: Actively updating order of {_sortables.Count} sortables in interval {_updateFrequency}\n{includedObjects}");
+             Debug.Log($"{nameof(SortableManager)}: Actively updating order of {_sortables.Count} sortables and staggering {onlyUpdateCountPerFrame} per frame\n{includedObjects}");
          }
 
-         private void LateUpdate ()
+         private void LateUpdate()
          {
-             if (_updateTimer.IsRunning) return;
-             SetTimer();
-         
              UpdateSortOrder();
          }
 
@@ -53,18 +47,11 @@ using UnityEngine;
                  sortable.UpdateOrder();
              }
          }
-     
-         private void SetTimer() => _updateTimer.Set(_updateFrequency);
+         
          
          public static void Add(ISortable sortable)
          {
-             if (_sortables == null)
-             {
-                 _sortables = new List<ISortable>();
-             }
-             
-             if (_sortables.Contains(sortable)) return;
-         
+             _sortables ??= new HashSet<ISortable>();
              _sortables.Add(sortable);
          }
      }
