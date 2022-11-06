@@ -4,7 +4,7 @@ using CamLib;
 namespace Tests
 {
     [Serializable]
-    public class CustomGameData : GameDataBase
+    public class CustomGameData : GameData
     {
         public bool WeHaveIt;
 

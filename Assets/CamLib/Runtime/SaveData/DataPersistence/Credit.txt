@@ -1,1 +1,0 @@
-﻿This save system is a modified version of the original source: https://github.com/trevermock/save-load-system/

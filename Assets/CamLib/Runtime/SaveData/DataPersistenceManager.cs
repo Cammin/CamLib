@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace CamLib
 {
-    public abstract class DataPersistenceManager<T> : MonoBehaviour where T : GameDataBase
+    public abstract class DataPersistenceManager<T> : MonoBehaviour where T : GameData
     {
         [Header("Debugging")]
         [SerializeField] private bool _disableDataPersistence = false;

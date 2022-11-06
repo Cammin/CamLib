@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CamLib.Editor
 {
-    public abstract class SaveDataWindow<T> : EditorWindow where T : GameDataBase
+    public abstract class DataPersistenceWindow<T> : EditorWindow where T : GameData
     {
         public T _gameData;
         public string _profileId;
@@ -22,7 +22,7 @@ namespace CamLib.Editor
 
         //not doing a menuitem, but enable if this is preferred
         //[MenuItem("Tools/SaveDataWindow")]
-        public static void CreateWindow<TWindow>(DataPersistenceManager<T> ctx = null) where TWindow : SaveDataWindow<T>
+        public static void CreateWindow<TWindow>(DataPersistenceManager<T> ctx = null) where TWindow : DataPersistenceWindow<T>
         {
             TWindow saveDataWindow = GetWindow<TWindow>();
             saveDataWindow.titleContent = new GUIContent()

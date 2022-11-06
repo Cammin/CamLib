@@ -1,6 +1,6 @@
 namespace CamLib
 {
-    public interface IDataPersistence<in T> where T : GameDataBase
+    public interface IDataPersistence<in T> where T : GameData
     {
         void LoadData(T data);
 

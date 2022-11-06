@@ -1,7 +1,7 @@
 namespace CamLib
 {
     //to make this data able to be extended from for any project, this must be inherited from as a custom class now
-    public abstract class GameDataBase
+    public abstract class GameData
     {
         public long LastUpdated;
 
