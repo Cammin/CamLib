@@ -45,9 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _disableDataPersistence: 0
-  _initializeDataIfNull: 0
+  _initializeDataIfNull: 1
+  _loadBeforeFirstSceneLoad: 1
   _overrideSelectedProfileId: 0
   _testSelectedProfileId: test
   _fileName: save.data
   _useEncryption: 0
-  _autoSaveTimeSeconds: 60
+  _autoSaveTimeSeconds: 1

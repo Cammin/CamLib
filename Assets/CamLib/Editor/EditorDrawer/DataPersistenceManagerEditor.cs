@@ -7,11 +7,20 @@ namespace CamLib.Editor
     {
         public override void OnInspectorGUI()
         {
+            SerializedProperty prop = serializedObject.FindProperty("_dataPersistenceObjects");
+            
+            
+
             if (GUILayout.Button("Open Profile Editor"))
             {
                 DataPersistenceWindow<T>.CreateWindow<TWindow>(target as DataPersistenceManager<T>);
             }
             EditorGUILayout.Space();
+            
+            
+            
+            //todo add so that the override bool for id is only shown when true
+            
             base.OnInspectorGUI();
         }
     }

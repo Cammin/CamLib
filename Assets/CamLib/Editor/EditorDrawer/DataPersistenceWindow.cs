@@ -93,7 +93,7 @@ namespace CamLib.Editor
             
             if (GUILayout.Button("Save"))
             {
-                _managerPrefab.InitializeFormatter();
+                _managerPrefab.InitializeDataHandler();
                 _managerPrefab.SaveGame(_profileId, _gameData);
             }
 
@@ -101,8 +101,14 @@ namespace CamLib.Editor
             {
                 if (GUILayout.Button("Load"))
                 {
-                    _managerPrefab.InitializeFormatter();
+                    _managerPrefab.InitializeDataHandler();
                     _gameData = _managerPrefab.LoadGame(_profileId);
+                }
+                
+                if (GUILayout.Button("Delete"))
+                {
+                    _managerPrefab.InitializeDataHandler();
+                    _managerPrefab.DeleteProfileData(_profileId);
                 }
             }
 

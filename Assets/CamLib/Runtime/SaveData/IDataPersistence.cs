@@ -2,10 +2,14 @@ namespace CamLib
 {
     public interface IDataPersistence<in T> where T : GameData
     {
+        /// <summary>
+        /// When we're reading the data to retain previous session
+        /// </summary>
         void LoadData(T data);
 
-        // The 'ref' keyword was removed from here as it is not needed.
-        // In C#, non-primitive types are automatically passed by reference.
+        /// <summary>
+        /// When we're writing our data to store later
+        /// </summary>
         void SaveData(T data);
     }
 }

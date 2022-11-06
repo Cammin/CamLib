@@ -13,6 +13,8 @@ namespace CamLib
         [Header("Debugging")]
         [SerializeField] private bool _disableDataPersistence = false;
         [SerializeField] private bool _initializeDataIfNull = false;
+        [SerializeField] private bool _loadBeforeFirstSceneLoad = false;
+        [Space]
         [SerializeField] private bool _overrideSelectedProfileId = false;
         [SerializeField] private string _testSelectedProfileId = "test";
 
@@ -31,8 +33,8 @@ namespace CamLib
     
         [PublicAPI]
         public static DataPersistenceManager<T> Instance { get; private set; }
-        [PublicAPI]
-        public string FileName => _fileName;
+
+        [PublicAPI] public int PersistentObjectCount => _dataPersistenceObjects.Count;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         public static void ResetStatics()
@@ -56,12 +58,12 @@ namespace CamLib
                 Debug.LogWarning("Data Persistence is currently disabled!");
             }
 
-            InitializeFormatter();
+            InitializeDataHandler();
             InitializeSelectedProfileId();
         }
 
         [PublicAPI]
-        public void InitializeFormatter()
+        public void InitializeDataHandler()
         {
             _dataHandler = new FileDataHandler<T>(Application.persistentDataPath, _fileName, _useEncryption);
         }
@@ -76,16 +78,26 @@ namespace CamLib
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
+        private void Start()
+        {
+            if (_loadBeforeFirstSceneLoad)
+            {
+                SetupLoadingMecanism();
+            }
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => SetupLoadingMecanism();
+        private void SetupLoadingMecanism()
         {
             _dataPersistenceObjects = FindAllDataPersistenceObjects();
             LoadGame();
 
             // start up the auto saving coroutine
-            if (_autoSaveCoroutine != null) 
+            if (_autoSaveCoroutine != null)
             {
                 StopCoroutine(_autoSaveCoroutine);
             }
+
             _autoSaveCoroutine = StartCoroutine(AutoSave());
         }
 
@@ -153,10 +165,13 @@ namespace CamLib
                 return null;
             }
 
-            // push the loaded data to all other scripts that need it
-            foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects) 
+            if (Application.isPlaying)
             {
-                dataPersistenceObj.LoadData(_gameData);
+                // push the loaded data to all other scripts that need it
+                foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects)
+                {
+                    dataPersistenceObj?.LoadData(_gameData);
+                }
             }
 
             return _gameData;
@@ -184,10 +199,13 @@ namespace CamLib
                 return;
             }
 
-            // pass the data to other scripts so they can update it
-            foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects) 
+            if (Application.isPlaying)
             {
-                dataPersistenceObj.SaveData(_gameData);
+                // pass the data to other scripts so they can update it
+                foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects) 
+                {
+                    dataPersistenceObj?.SaveData(_gameData);
+                }
             }
 
             // timestamp the data so we know when it was last saved
