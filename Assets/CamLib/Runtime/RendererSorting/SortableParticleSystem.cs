@@ -8,7 +8,8 @@ namespace CamLib
 
         protected override void SetOrderInLayer(ParticleSystem component, int order)
         {
-            if (ReferenceEquals(_renderer, null))
+
+            if (_renderer)
             {
                 _renderer = component.GetComponent<ParticleSystemRenderer>();
             }
