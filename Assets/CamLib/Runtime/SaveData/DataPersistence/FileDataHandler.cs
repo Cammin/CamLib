@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CamLib
 {
-    public class FileDataHandler
+    public class FileDataHandler<T> where T : GameDataBase
     {
         private string dataDirPath = "";
         private string dataFileName = "";
@@ -20,7 +20,7 @@ namespace CamLib
             this.useEncryption = useEncryption;
         }
 
-        public GameData Load(string profileId, bool allowRestoreFromBackup = true) 
+        public T Load(string profileId, bool allowRestoreFromBackup = true) 
         {
             // base case - if the profileId is null, return right away
             if (profileId == null) 
@@ -30,7 +30,7 @@ namespace CamLib
 
             // use Path.Combine to account for different OS's having different path separators
             string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
-            GameData loadedData = null;
+            T loadedData = null;
             if (File.Exists(fullPath)) 
             {
                 try 
@@ -52,7 +52,7 @@ namespace CamLib
                     }
 
                     // deserialize the data from Json back into the C# object
-                    loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+                    loadedData = JsonUtility.FromJson<T>(dataToLoad);
                 }
                 catch (Exception e) 
                 {
@@ -80,7 +80,7 @@ namespace CamLib
             return loadedData;
         }
 
-        public void Save(GameData data, string profileId) 
+        public void Save(T data, string profileId) 
         {
             // base case - if the profileId is null, return right away
             if (profileId == null) 
@@ -115,7 +115,7 @@ namespace CamLib
                 }
 
                 // verify the newly saved file can be loaded successfully
-                GameData verifiedGameData = Load(profileId);
+                T verifiedGameData = Load(profileId);
                 // if the data can be verified, back it up
                 if (verifiedGameData != null) 
                 {
@@ -163,9 +163,9 @@ namespace CamLib
             }
         }
 
-        public Dictionary<string, GameData> LoadAllProfiles() 
+        public Dictionary<string, T> LoadAllProfiles() 
         {
-            Dictionary<string, GameData> profileDictionary = new Dictionary<string, GameData>();
+            Dictionary<string, T> profileDictionary = new Dictionary<string, T>();
 
             // loop over all directory names in the data directory path
             IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(dataDirPath).EnumerateDirectories();
@@ -184,7 +184,7 @@ namespace CamLib
                 }
 
                 // load the game data for this profile and put it in the dictionary
-                GameData profileData = Load(profileId);
+                T profileData = Load(profileId);
                 // defensive programming - ensure the profile data isn't null,
                 // because if it is then something went wrong and we should let ourselves know
                 if (profileData != null) 
@@ -204,11 +204,11 @@ namespace CamLib
         {
             string mostRecentProfileId = null;
 
-            Dictionary<string, GameData> profilesGameData = LoadAllProfiles();
-            foreach (KeyValuePair<string, GameData> pair in profilesGameData) 
+            Dictionary<string, T> profilesGameData = LoadAllProfiles();
+            foreach (KeyValuePair<string, T> pair in profilesGameData) 
             {
                 string profileId = pair.Key;
-                GameData gameData = pair.Value;
+                T gameData = pair.Value;
 
                 // skip this entry if the gamedata is null
                 if (gameData == null) 

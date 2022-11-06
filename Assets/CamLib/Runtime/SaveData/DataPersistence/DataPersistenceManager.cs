@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace CamLib
 {
-    public class DataPersistenceManager : MonoBehaviour
+    public abstract class DataPersistenceManager<T> : MonoBehaviour where T : GameDataBase
     {
         [Header("Debugging")]
         [SerializeField] private bool _disableDataPersistence = false;
@@ -16,20 +17,20 @@ namespace CamLib
         [SerializeField] private string _testSelectedProfileId = "test";
 
         [Header("File Storage Config")]
-        [SerializeField] private string _fileName;
+        [SerializeField] private string _fileName = "save.data";
         [SerializeField] private bool _useEncryption;
 
         [Header("Auto Saving Configuration")]
         [SerializeField] private float _autoSaveTimeSeconds = 60f;
 
-        private GameData _gameData;
-        private List<IDataPersistence> _dataPersistenceObjects = new List<IDataPersistence>();
-        private FileDataHandler _dataHandler;
+        private T _gameData;
+        private List<IDataPersistence<T>> _dataPersistenceObjects = new List<IDataPersistence<T>>();
+        private FileDataHandler<T> _dataHandler;
         private string _selectedProfileId = "";
         private Coroutine _autoSaveCoroutine;
     
         [PublicAPI]
-        public static DataPersistenceManager Instance { get; private set; }
+        public static DataPersistenceManager<T> Instance { get; private set; }
         [PublicAPI]
         public string FileName => _fileName;
 
@@ -62,7 +63,7 @@ namespace CamLib
         [PublicAPI]
         public void InitializeFormatter()
         {
-            _dataHandler = new FileDataHandler(Application.persistentDataPath, _fileName, _useEncryption);
+            _dataHandler = new FileDataHandler<T>(Application.persistentDataPath, _fileName, _useEncryption);
         }
 
         private void OnEnable() 
@@ -119,14 +120,14 @@ namespace CamLib
         }
 
         [PublicAPI]
-        public void NewGame() 
+        public void NewGame()
         {
-            _gameData = new GameData();
+            _gameData = (T)Activator.CreateInstance(typeof(T));
             _gameData.OnConstruct();
         }
 
         [PublicAPI]
-        public GameData LoadGame(string profileId = null)
+        public T LoadGame(string profileId = null)
         {
             profileId ??= _selectedProfileId;
 
@@ -153,7 +154,7 @@ namespace CamLib
             }
 
             // push the loaded data to all other scripts that need it
-            foreach (IDataPersistence dataPersistenceObj in _dataPersistenceObjects) 
+            foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects) 
             {
                 dataPersistenceObj.LoadData(_gameData);
             }
@@ -162,7 +163,7 @@ namespace CamLib
         }
 
         [PublicAPI]
-        public void SaveGame(string profileId = null, GameData overrideData = null)
+        public void SaveGame(string profileId = null, T overrideData = null)
         {
             profileId ??= _selectedProfileId;
             if (overrideData != null)
@@ -184,7 +185,7 @@ namespace CamLib
             }
 
             // pass the data to other scripts so they can update it
-            foreach (IDataPersistence dataPersistenceObj in _dataPersistenceObjects) 
+            foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects) 
             {
                 dataPersistenceObj.SaveData(_gameData);
             }
@@ -201,11 +202,10 @@ namespace CamLib
             SaveGame();
         }
 
-        private List<IDataPersistence> FindAllDataPersistenceObjects() 
+        private List<IDataPersistence<T>> FindAllDataPersistenceObjects() 
         {
-            IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IDataPersistence>();
-
-            return new List<IDataPersistence>(dataPersistenceObjects);
+            IEnumerable<IDataPersistence<T>> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IDataPersistence<T>>();
+            return new List<IDataPersistence<T>>(dataPersistenceObjects);
         }
 
         [PublicAPI]
@@ -215,7 +215,7 @@ namespace CamLib
         }
 
         [PublicAPI]
-        public Dictionary<string, GameData> GetAllProfilesGameData() 
+        public Dictionary<string, T> GetAllProfilesGameData() 
         {
             return _dataHandler.LoadAllProfiles();
         }

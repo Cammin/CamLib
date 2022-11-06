@@ -4,25 +4,27 @@ using UnityEngine;
 
 namespace CamLib.Editor
 {
-    public class SaveDataWindow : EditorWindow
+    public abstract class SaveDataWindow<T> : EditorWindow where T : GameDataBase
     {
-        public GameData _gameData = new GameData();
+        public T _gameData;
         public string _profileId;
 
         public SerializedObject _serializedObject;
-        private SerializedProperty _propSaveData;
+        public SerializedProperty _propSaveData;
         public SerializedProperty _propManagerPrefab;
-        private SerializedProperty _propId;
+        public SerializedProperty _propId;
 
-        public DataPersistenceManager _managerPrefab;
+        public DataPersistenceManager<T> _managerPrefab;
         public SerializedObject _managerObj;
         public SerializedProperty _managerPropFileName;
+        
+        private Vector2 scroll;
 
         //not doing a menuitem, but enable if this is preferred
         //[MenuItem("Tools/SaveDataWindow")]
-        public static void CreateWindow(DataPersistenceManager ctx = null)
+        public static void CreateWindow<TWindow>(DataPersistenceManager<T> ctx = null) where TWindow : SaveDataWindow<T>
         {
-            SaveDataWindow saveDataWindow = GetWindow<SaveDataWindow>();
+            TWindow saveDataWindow = GetWindow<TWindow>();
             saveDataWindow.titleContent = new GUIContent()
             {
                 text = "Save Data",
@@ -33,13 +35,13 @@ namespace CamLib.Editor
         
         public void OnGUI()
         { 
-            _serializedObject = new SerializedObject(this);
             if (_serializedObject == null)
             {
+                _serializedObject = new SerializedObject(this);
+                _propId = _serializedObject.FindProperty(nameof(_profileId));
+                _propManagerPrefab = _serializedObject.FindProperty(nameof(_managerPrefab));
+                _propSaveData = _serializedObject.FindProperty(nameof(_gameData));
             }
-            _propId = _serializedObject.FindProperty(nameof(_profileId));
-            _propManagerPrefab = _serializedObject.FindProperty(nameof(_managerPrefab));
-            _propSaveData = _serializedObject.FindProperty(nameof(_gameData));
             
             if (GUILayout.Button("Open Save Path"))
             {
@@ -61,10 +63,17 @@ namespace CamLib.Editor
                 _managerObj = new SerializedObject(_managerPrefab);
                 _managerPropFileName = _managerObj.FindProperty("_fileName");
             }
+            _managerObj.Update();
 
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(_propId);
+            if (string.IsNullOrEmpty(_propId.stringValue))
+            {
+                EditorGUILayout.HelpBox("Set a profile", MessageType.Warning);
+                _serializedObject.ApplyModifiedProperties();
+                return;
+            }
 
             string dir = Path.Combine(Application.persistentDataPath, _propId.stringValue);
             string path = Path.Combine(dir, _managerPropFileName.stringValue);
@@ -113,7 +122,5 @@ namespace CamLib.Editor
 
             _serializedObject.ApplyModifiedProperties();
         }
-
-        private Vector2 scroll;
     }
 }

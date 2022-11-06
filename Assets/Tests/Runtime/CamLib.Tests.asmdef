@@ -1,5 +1,5 @@
 {
-    "name": "CamLib.Example",
+    "name": "CamLib.Tests",
     "rootNamespace": "",
     "references": [
         "GUID:4c6481a3fda231149af656b47013c153"
