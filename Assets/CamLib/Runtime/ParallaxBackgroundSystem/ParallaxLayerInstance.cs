@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEditor;
+using UnityEngine;
 
 namespace CamLib
 {
@@ -8,14 +10,22 @@ namespace CamLib
         
         [SerializeField] private SpriteRenderer _render = null;
         [SerializeField] private ParallaxAssetLayer _properties = null;
-        
+        [SerializeField] private bool _debugSetupEveryFrame;
+
         private Camera _cam;
+        private Vector2 _camSize;
 
+        /// <summary>
+        /// origin is the position of the very starting point.
+        /// </summary>
         private Vector2 _origin;
-        private Vector2 _targetOffset;
+        private Vector2 _snappingOffsetRelativeToCamera; //this may not be used, but keep it just in case of emegency
 
-        private Vector2 _autoScroll;
-        private Vector2 _textureUnitSize = Vector2.one;
+        /// <summary>
+        /// this constantly is added to every frame
+        /// </summary>
+        private Vector2 _autoScrollOffset;
+        private Vector2 _spriteWorldSize = Vector2.one;
 
         public void SetProperties(ParallaxAssetLayer pairing) => _properties = pairing;
         public void SetSortingOrder(int order) => _render.sortingOrder = order;
@@ -27,15 +37,22 @@ namespace CamLib
             _render.color = newColor;
         }
 
-
         public void Start()
         {
             Setup();
         }
         private void Update()
         {
+            if (_debugSetupEveryFrame)
+            {
+                Setup();
+            }
             UpdatePosition();
+            
+            //DebugUtil.DrawRect(_cam.OrthographicRect());
         }
+
+        
 
         private void Setup()
         {
@@ -46,37 +63,40 @@ namespace CamLib
                 return;
             }
 
-            Texture2D texture = sprite.texture;
-            _textureUnitSize = new Vector2(texture.width, texture.height) / sprite.pixelsPerUnit;
+            //Texture2D texture = sprite.texture;
+            _spriteWorldSize = new Vector2(sprite.rect.width, sprite.rect.height) / sprite.pixelsPerUnit;
 
-            Vector2 cameraSize = _cam.OrthographicSize();
+            Rect camArea = _cam.OrthographicRect();
+            _camSize = camArea.size;
+
             //Debug.Log($"Camera Unit Size: {cameraSize}");
-            
-            
-            Vector2 renderSize = GetMinimumComfortableSize(_textureUnitSize, cameraSize, _properties.Infinite);
             //Debug.Log($"Render Size: {renderSize}");
             
             _render.sprite = sprite;
             _render.sortingLayerID = _properties.Layer;
-            _render.size = renderSize;
+            _render.size = GetSpriteRendererSize();
             
-            SnapToCameraBounds(_textureUnitSize, cameraSize);
+            SnapToCameraBounds();
         }
 
-        private Vector2 GetMinimumComfortableSize(Vector2 textureUnitSize, Vector2 cameraSize, Bool2 isInfinite)
+        
+        private Vector2 GetSpriteRendererSize()
         {
             Vector2 size = Vector2.zero;
-            size.x = GetMinimumComfortableLength(textureUnitSize.x, cameraSize.x, isInfinite.x);
-            size.y = GetMinimumComfortableLength(textureUnitSize.y, cameraSize.y, isInfinite.y);
+            size.x = GetSpriteRendererLength(_spriteWorldSize.x, _camSize.x, _properties.Infinite.x);
+            size.y = GetSpriteRendererLength(_spriteWorldSize.y, _camSize.y, _properties.Infinite.y);
             return size;
         }
-        private float GetMinimumComfortableLength(float textureUnitSize, float cameraSize, bool isInfinite)
+        private float GetSpriteRendererLength(float spriteWorldLength, float cameraLength, bool infinite)
         {
-            if (!isInfinite) return textureUnitSize;
-            return cameraSize * WRAP_SCALE;
+            if (infinite)
+            {
+                return Mathf.Max(cameraLength, spriteWorldLength) * WRAP_SCALE;
+            }
+            return spriteWorldLength;
         }
-        
-        private void SnapToCameraBounds(Vector2 textureUnitOffset, Vector2 cameraUnitOffset)
+
+        private void SnapToCameraBounds()
         {
             ParallaxSnapSide snapSide = _properties.SnapSide;
             
@@ -85,36 +105,15 @@ namespace CamLib
                 return;
             }
 
-            Rect area = _cam.OrthographicRect();
-            if (area == Rect.zero)
+            Rect camArea = _cam.OrthographicRect();
+            if (camArea == Rect.zero)
             {
                 return;
             }
             
-            //bottom align with image, to bottom align with bottom of camera.
-            Vector2 newOriginPos = Vector2.zero;
-            Vector2 originOffset = textureUnitOffset / 2;
-            switch (snapSide)
-            {
-                case ParallaxSnapSide.Left:
-                    newOriginPos.x = area.xMin + originOffset.x;
-                    break;
-                    
-                case ParallaxSnapSide.Right:
-                    newOriginPos.x = area.xMax - originOffset.x;
-                    break;
-                
-                case ParallaxSnapSide.Top:
-                    newOriginPos.y = area.yMax - originOffset.y;
-                    break;
-                
-                case ParallaxSnapSide.Bottom:
-                    newOriginPos.y = area.yMin + originOffset.y;
-                    break;
-            }
-            _origin = newOriginPos;
+            SetupOrigin(camArea, snapSide);
 
-            
+
             float targetOffsetDirection = 0;
             switch (snapSide)
             {
@@ -130,7 +129,7 @@ namespace CamLib
             }
 
             //const float digInMultiplier = 1.0035f;  //this extra tiny offset is to help with the anchored objects not moving up so fast that it creates a gap line within the pixel perfect camera. 
-            _targetOffset = (textureUnitOffset - cameraUnitOffset) / 2 * (targetOffsetDirection);
+            _snappingOffsetRelativeToCamera = (_spriteWorldSize - _camSize) / 2 * targetOffsetDirection;
             
             switch (snapSide)
             {
@@ -146,47 +145,83 @@ namespace CamLib
             }
         }
 
-        private void UpdatePosition()
+        private void SetupOrigin(Rect camArea, ParallaxSnapSide snapSide)
         {
-            Vector2 camPos = _cam.transform.position;
+            //bottom align with image, to bottom align with bottom of camera.
+            Vector2 newOriginPos = camArea.center;
+            Vector2 halfRendererSize = _spriteWorldSize / 2;
+            switch (snapSide)
+            {
+                case ParallaxSnapSide.Left:
+                    newOriginPos.x = camArea.xMin + halfRendererSize.x;
+                    break;
 
-            Vector2 scrollSpeed = _properties.AutoScrollSpeed;
-            scrollSpeed.y *= 0.5f; //add extra autoscroll speed to compensate for an unknown, unexpected extra half-y value
-            _autoScroll += scrollSpeed * Time.deltaTime;
+                case ParallaxSnapSide.Right:
+                    newOriginPos.x = camArea.xMax - halfRendererSize.x;
+                    break;
 
-            Vector2 startPos = _origin + _autoScroll;
-            Vector2 targetPos = camPos + _targetOffset;
+                case ParallaxSnapSide.Top:
+                    newOriginPos.y = camArea.yMax - halfRendererSize.y;
+                    break;
 
-            transform.position = SolveVector2(startPos, targetPos, _properties.ParallaxEffectMultiplier, _properties.Infinite, _textureUnitSize);
+                case ParallaxSnapSide.Bottom:
+                    newOriginPos.y = camArea.yMin + halfRendererSize.y;
+                    break;
+            }
+
+            _origin = newOriginPos;
         }
 
-        private Vector2 SolveVector2(Vector2 start, Vector2 target, Vector2 factor, Bool2 isInfinite,
-            Vector2 textureSizeInUnits)
+        private void UpdatePosition()
+        {
+            UpdateAutoScroll();
+            
+            Vector2 camPos = _cam.transform.position;
+            Vector2 startPos = _origin + _autoScrollOffset;
+            Vector2 solvedPos = SolveVector2(startPos, camPos);
+            
+            transform.position = solvedPos;
+        }
+
+        private void UpdateAutoScroll()
+        {
+            Vector2 scrollSpeed = _properties.AutoScrollSpeed;
+            scrollSpeed.y *= 0.5f; //add extra autoscroll speed to compensate for an unknown, unexpected extra half-y value
+            _autoScrollOffset += scrollSpeed * Time.deltaTime;
+        }
+
+        private Vector2 SolveVector2(Vector2 start, Vector2 target)
         {
             Vector2 newPos = Vector2.zero;
-            newPos.x = SolveVector(start.x, target.x, factor.x, isInfinite.x, textureSizeInUnits.x);
-            newPos.y = SolveVector(start.y, target.y, factor.y, isInfinite.y, textureSizeInUnits.y);
+            newPos.x = SolveVector(start.x, target.x, _properties.ParallaxEffectMultiplier.x,  _properties.Infinite.x, _spriteWorldSize.x, _camSize.x);
+            newPos.y = SolveVector(start.y, target.y, _properties.ParallaxEffectMultiplier.y,  _properties.Infinite.y, _spriteWorldSize.y, _camSize.y);
             return newPos;
         }
 
-        private float SolveVector(float start, float target, float factor, bool isInfinite, float textureSizeInUnits)
+        private float SolveVector(float start, float target, float factor, bool infinite, float spriteRendererLength, float cameraLength)
         {
             if (factor.IsEqual(1))
             {
                 return target;
             }
 
-            if (!isInfinite) return Mathf.LerpUnclamped(start, target, factor);
+            if (!infinite)
+            {
+                return Mathf.LerpUnclamped(start, target, factor);
+            }
             
-            float distance = target - start;
-            float dir = Mathf.Sign(distance);
+            float direction = target - start;
+
+            float factoredDistance = (direction * factor);
+            float targetOffset = factoredDistance % spriteRendererLength;
+            start += targetOffset;
             
-            int journeys = Mathf.FloorToInt(Mathf.Abs(distance / textureSizeInUnits));
-            journeys += factor < 0 ? 1 : 0;
-            
-            float targetOffset = (distance * factor) % textureSizeInUnits;
-            start += (textureSizeInUnits * dir * journeys);
-            return start + targetOffset;
+            float abs = Mathf.Abs(direction / spriteRendererLength);
+            int laps = Mathf.FloorToInt(abs);
+            float directionNormalized = Mathf.Sign(direction);
+            start += (spriteRendererLength * laps * directionNormalized);
+
+            return start;
         }
 
 

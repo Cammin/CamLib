@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace CamLib
 {
-    [CreateAssetMenu(fileName = nameof(ParallaxAssetStack), menuName = ParallaxConsts.CREATE_ASSET_PATH + nameof(ParallaxAssetStack), order = 0)]
+    [CreateAssetMenu(fileName = nameof(ParallaxAssetStack), menuName = "CamLib/" + nameof(ParallaxAssetStack), order = 0)]
     public class ParallaxAssetStack : ScriptableObject
     {
-        [Header("Highest on the list is the frontmost")]
+        [Header("Lowest on the list is the front-most")]
         [SerializeField] private List<ParallaxAssetLayer> _backgrounds = null;
 
         public List<ParallaxAssetLayer> Backgrounds => _backgrounds;

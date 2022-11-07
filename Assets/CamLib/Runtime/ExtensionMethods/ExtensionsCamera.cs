@@ -16,11 +16,11 @@ namespace CamLib
         public static Rect OrthographicRect(this Camera cam)
         {
             Vector2 size = OrthographicSize(cam);
-            float halfWidth = size.x / 2;
-            float halfHeight = size.y / 2;
+            float halfWidth = size.x * 0.5f;
+            float halfHeight = size.y * 0.5f;
             Vector2 pos = cam.transform.position;
-            Vector2 position = new Vector2(pos.x - halfWidth, pos.y + halfHeight);
-            return new Rect(position, size);
+            Vector2 bottomLeft = new Vector2(pos.x - halfWidth, pos.y - halfHeight);
+            return new Rect(bottomLeft, size);
         }
     }
 }

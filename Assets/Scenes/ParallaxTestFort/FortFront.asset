@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16ca4b7307e8a774285cf620923757e4, type: 3}
-  m_Name: ParallaxBackgroundLayerBack
+  m_Name: FortFront
   m_EditorClassIdentifier: 
-  _backgroundSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  _layer: 1694019481
+  _backgroundSprite: {fileID: 21300000, guid: 0f63bce818a89fa4aad8136c5b8bc0ed, type: 3}
+  _layer: 285536611
   _imageAlpha: 1
-  _snapSide: 0
+  _snapSide: 1
   _autoScrollSpeed: {x: 0, y: 0}
   _infinite:
     x: 1
-    y: 1
-  _parallaxEffectXMultiplier: 0.302
-  _parallaxEffectYMultiplier: 0.314
+    y: 0
+  _parallaxEffectXMultiplier: -0.498
+  _parallaxEffectYMultiplier: 0

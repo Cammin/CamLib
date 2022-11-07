@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ParallaxBackgroundLayerFront
   m_EditorClassIdentifier: 
   _backgroundSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  _layer: 0
+  _layer: 285536611
   _imageAlpha: 1
   _snapSide: 0
   _autoScrollSpeed: {x: 0, y: 0}

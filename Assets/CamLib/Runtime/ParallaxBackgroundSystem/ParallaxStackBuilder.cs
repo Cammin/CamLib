@@ -32,8 +32,12 @@ namespace CamLib
 
             for (int i = 0; i < stack.Backgrounds.Count; i++)
             {
-                ParallaxAssetLayer pairing = stack.Backgrounds[i];
-                MakeLayer(pairing, i);
+                ParallaxAssetLayer layer = stack.Backgrounds[i];
+                if (layer == null)
+                {
+                    continue;
+                }
+                MakeLayer(layer, i);
             }
         }
 
@@ -42,7 +46,7 @@ namespace CamLib
             string layerName = SortingLayer.IDToName(pairing.Layer);
             
             ParallaxLayerInstance bg = Instantiate(_prefab, transform);
-            bg.gameObject.name = $"{layerName} {i}";
+            bg.gameObject.name = $"{pairing.BackgroundSprite.name}";
             bg.SetProperties(pairing);
             bg.SetSortingOrder(i);
             bg.SetCamera(_camera);

@@ -2,12 +2,12 @@
 
 namespace CamLib
 {
-    [CreateAssetMenu(fileName = nameof(ParallaxAssetLayer), menuName = ParallaxConsts.CREATE_ASSET_PATH + nameof(ParallaxAssetLayer), order = 0)]
+    [CreateAssetMenu(fileName = nameof(ParallaxAssetLayer), menuName = "CamLib/" + nameof(ParallaxAssetLayer), order = 0)]
     public class ParallaxAssetLayer : ScriptableObject
     {
         [SpriteRender]
         [SerializeField] private Sprite _backgroundSprite = null;
-        [SerializeField] private int _layer = 0; //SpriteLayerDrawer for this todo
+        [SerializeField, SortingLayer] private int _layer = 0; //SpriteLayerDrawer for this todo
         [SerializeField, Range(0, 1)] private float _imageAlpha = 1;
         
         [Header("Alignment/Movement")]

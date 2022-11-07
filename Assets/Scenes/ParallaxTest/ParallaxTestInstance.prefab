@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3995584276253869368}
   - component: {fileID: 9137386157404949873}
   m_Layer: 0
-  m_Name: New Prefab
+  m_Name: ParallaxTestInstance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
