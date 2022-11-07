@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0c554766b3ff64eba9819b30fcb1e1, type: 3}
+  m_Name: MountainDusk
+  m_EditorClassIdentifier: 
+  _backgrounds:
+  - {fileID: 11400000, guid: 089cd542b0022ba4e851a592ba3567a8, type: 2}
+  - {fileID: 11400000, guid: e5e5d859db81cbe4f9f4b74017e2fae2, type: 2}
+  - {fileID: 11400000, guid: 95cc6fba0f5a9154a9d61cae004dbbea, type: 2}
+  - {fileID: 11400000, guid: e156088c58b3ef44f90fab625cea69fd, type: 2}
+  - {fileID: 11400000, guid: 91079deaeea68a9479c5c02c41c98c1d, type: 2}
+  - {fileID: 11400000, guid: efbc82d8e46fa644e94e54bf6ddeed81, type: 2}

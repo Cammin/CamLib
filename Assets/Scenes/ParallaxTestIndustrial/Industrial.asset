@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0c554766b3ff64eba9819b30fcb1e1, type: 3}
+  m_Name: Industrial
+  m_EditorClassIdentifier: 
+  _backgrounds:
+  - {fileID: 11400000, guid: b9e6de0c4a5919a449d08ec548c1e563, type: 2}
+  - {fileID: 11400000, guid: f36348add95b6e04484c5a8d1af4de6c, type: 2}
+  - {fileID: 11400000, guid: 9fecc1cda0830c444942531343cfb1d3, type: 2}
+  - {fileID: 11400000, guid: 441a4d2893177ac4bb765696de0e34de, type: 2}
