@@ -8,25 +8,21 @@ This package would contain general functionality that can apply to any Unity pro
 
 ## Features
   - Extension methods
-  - Save/load system
+  - Save/Load system
   - Audio pooler
-    - Bool2 data type
+  - Bool2 data type
+  - Colors
   
   - Attributes
-    - MinMax
-    - ReadOnly
-    - SortingOrder
+    - [MinMax](Assets/CamLib/Runtime/Attributes/MinMaxRangeAttribute.cs) (Vector2)
+    - [ReadOnly](Assets/CamLib/Runtime/Attributes/ReadOnlyAttribute.cs)
+    - [SortingLayer](Assets/CamLib/Runtime/Attributes/SortingOrderAttribute.cs) (int)
+    - [SpriteRender](Assets/CamLib/Runtime/Attributes/SpriteRenderAttribute.cs) (Sprite)
+    - [AudioClipButtons](Assets/CamLib/Runtime/Attributes/AudioClipButtonsAttribute.cs) (AudioClip)
 
   - Utility Components
     - Singleton
     - Simple Application closer
-
-  - AudioClip field play-stop buttons
-  - Sprite field Pixel-Perfect checkerboard inspector preview
-  - MinMax field attribute
-  - Colors
-
-
 
 ## Disclaimer
 - The API could and will change at any moments notice.
