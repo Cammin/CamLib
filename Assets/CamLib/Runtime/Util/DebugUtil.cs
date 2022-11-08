@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CamLib
 {
@@ -24,8 +23,10 @@ namespace CamLib
         }
         public static void DrawText(Vector2 pos, string txt)
         {
-            Handles.color = new Color(0.2f,0.2f,0.2f,1);
-            Handles.Label(pos, txt);
+#if UNITY_EDITOR
+            UnityEditor.Handles.color = new Color(0.2f,0.2f,0.2f,1);
+            UnityEditor.Handles.Label(pos, txt);
+#endif
         }
     }
 }
