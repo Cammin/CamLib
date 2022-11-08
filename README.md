@@ -16,7 +16,7 @@ This package would contain general functionality that can apply to any Unity pro
   - Attributes
     - [MinMax](Assets/CamLib/Runtime/Attributes/MinMaxRangeAttribute.cs) (Vector2)
     - [ReadOnly](Assets/CamLib/Runtime/Attributes/ReadOnlyAttribute.cs)
-    - [SortingOrder](Assets/CamLib/Runtime/Attributes/SortingOrderAttribute.cs) (int)
+    - [SortingLayer](Assets/CamLib/Runtime/Attributes/SortingOrderAttribute.cs) (int)
     - [SpriteRender](Assets/CamLib/Runtime/Attributes/SpriteRenderAttribute.cs) (Sprite)
     - [AudioClipButtons](Assets/CamLib/Runtime/Attributes/AudioClipButtonsAttribute.cs) (AudioClip)
 
