@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CamLib
 {
+    /// <summary>
+    /// Use on a vector2 to define a min/max from the inspector
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class MinMaxRangeAttribute : PropertyAttribute
     {
