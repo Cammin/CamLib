@@ -8,21 +8,27 @@ This package would contain general functionality that can apply to any Unity pro
 
 ## Features
   - Extension methods
-  - Simple save/load system
-  - Simple audio system
-  - AudioClip field play-stop buttons
-  - Sprite field Pixel-Perfect checkerboard inspector preview
-  - MinMax field attribute
-  - Bool2 data type
-  - More Color options
-  - SpriteLayerAttribute (TODO)
-  - ReadOnlyAttribute
+  - Save/load system
+  - Audio pooler
+    - Bool2 data type
+  
+  - Attributes
+    - MinMax
+    - ReadOnly
+    - SortingOrder
+
   - Utility Components
     - Singleton
     - Simple Application closer
 
+  - AudioClip field play-stop buttons
+  - Sprite field Pixel-Perfect checkerboard inspector preview
+  - MinMax field attribute
+  - Colors
+
+
 
 ## Disclaimer
-- The API could change at any moments notice. But *should* be relatively stable/unchanged.
-- This package will update the supported unity version at any moment's notice, but will usually stay up to date with the latest tech stream. 
+- The API could and will change at any moments notice.
+- This package will change the supported unity version at any moment's notice, but will usually stay up to date with the latest tech stream. 
 - In most cases, older Unity versions should work, but are not actively supported. 
