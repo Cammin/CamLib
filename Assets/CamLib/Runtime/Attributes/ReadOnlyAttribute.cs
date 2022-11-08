@@ -9,7 +9,7 @@ namespace CamLib
         PlayMode
     }
     /// <summary>
-    /// Use to define that a field is readonly. Additional paramete
+    /// Use to define that a field is readonly. Additional parameters to dictate if this is active in and/or out of playmode
     /// </summary>
     public class ReadOnlyAttribute : PropertyAttribute
     {
