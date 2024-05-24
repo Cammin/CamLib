@@ -200,7 +200,7 @@ namespace CamLib
 
         private float SolveVector(float start, float target, float factor, bool infinite, float spriteRendererLength, float cameraLength)
         {
-            if (factor.IsEqual(1))
+            if (Mathf.Approximately(factor, 1))
             {
                 return target;
             }

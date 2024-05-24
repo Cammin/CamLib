@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace CamLib
 {
@@ -16,11 +17,6 @@ namespace CamLib
         public static bool IsInRange(this int val, int min, int max)
         {
             return val >= min && val <= max;
-        }
-
-        public static bool IsEqual(this float val, float other)
-        {
-            return Math.Abs(val - other) < THRESHOLD;
         }
         
         public static bool IsWhole(this float val)
