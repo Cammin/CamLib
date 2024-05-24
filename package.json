@@ -4,7 +4,6 @@
   "displayName": "CamLib",
   "description": "Cammin's personal Unity utility library.",
   "documentationUrl": "https://github.com/Cammin/CamLib",
-  "changelogUrl": "https://github.com/Cammin/CamLib/blob/master/Assets/CamLib/CHANGELOG.md",
   "licensesUrl": "https://github.com/Cammin/CamLib/blob/master/LICENSE.md",
   "unity": "2022.1",
   "keywords": [
