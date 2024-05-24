@@ -16,7 +16,7 @@ namespace CamLib
                 }
             
                 //find if nonexistent
-                _instance = FindObjectOfType<T>(true);
+                _instance = FindAnyObjectByType<T>(FindObjectsInactive.Include);
                 if (_instance != null)
                 {
                     return _instance;
