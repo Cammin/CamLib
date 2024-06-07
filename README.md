@@ -6,25 +6,12 @@ My personal utilities package.
 This will gradually gain updates as it seems fit during personal project developments.  
 This package would contain general functionality that can apply to any Unity project.
 
-## Features
-  - Extension methods
-  - Save/Load system
-  - Audio pooler
-  - Bool2 data type
-  - Colors
-  
-  - Attributes
-    - [MinMax](Assets/CamLib/Runtime/Attributes/MinMaxRangeAttribute.cs) (Vector2)
-    - [ReadOnly](Assets/CamLib/Runtime/Attributes/ReadOnlyAttribute.cs)
-    - [SortingLayer](Assets/CamLib/Runtime/Attributes/SortingOrderAttribute.cs) (int)
-    - [SpriteRender](Assets/CamLib/Runtime/Attributes/SpriteRenderAttribute.cs) (Sprite)
-    - [AudioClipButtons](Assets/CamLib/Runtime/Attributes/AudioClipButtonsAttribute.cs) (AudioClip)
-
-  - Utility Components
-    - Singleton
-    - Simple Application closer
+In particular, there's some notable tools:
+- Centralized asset display window
+- Save/Load system with interactive data editor window
 
 ## Disclaimer
+- I don't give any regard to compatibility or unity version, so beware!
 - The API could and will change at any moments notice.
 - This package will change the supported unity version at any moment's notice, but will usually stay up to date with the latest tech stream. 
 - In most cases, older Unity versions should work, but are not actively supported. 
