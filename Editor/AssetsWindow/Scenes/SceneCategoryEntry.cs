@@ -35,12 +35,12 @@ namespace CamLib.Editor
 
             if (GUILayout.Button(EditorGUIUtility.IconContent("Scene"), GUILayout.Width(30)))
             {
-                EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(Path));
+                GoToScene(Path);
             }
             
             if (GUILayout.Button(Name, style))
             {
-                GoToScene(Path);
+                EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(Path));
             }
 
             void GoToScene(string path)

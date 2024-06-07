@@ -69,13 +69,13 @@ namespace CamLib.Editor
             {
                 if (GUILayout.Button(Image, IconStyle, GUILayout.Height(height), GUILayout.Width(height)))
                 {
-                    EditorGUIUtility.PingObject(Obj);
-                    Selection.activeObject = Obj;
+                    AssetDatabase.OpenAsset(Obj);
                 }
             
                 if (GUILayout.Button(Content, TextStyle, GUILayout.Height(height)))
                 {
-                    AssetDatabase.OpenAsset(Obj);
+                    EditorGUIUtility.PingObject(Obj);
+                    Selection.activeObject = Obj;
                 }
             }
         }
