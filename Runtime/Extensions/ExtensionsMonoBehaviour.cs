@@ -15,5 +15,10 @@ namespace CamLib
             }
             return behaviour.StartCoroutine(routine);
         }
+        
+        public static void SetVisible(this CanvasGroup group, bool active)
+        {
+            group.alpha = active ? 1 : 0;
+        }
     }
 }
