@@ -14,7 +14,7 @@ namespace CamLib.Editor
     /// - AssetDisplay: A tool to display assets (especially prefabs), with buttons to open them or ping them.
     /// 
     /// It's up to you to extend this window with your scenes, assets, and prefs.
-    /// todo explain how to do that
+    /// Derive a class from CentralizedAssetWindowImplementation and override the properties to define what you want in the window.
     /// </summary>
     public class CentralizedAssetWindow : EditorWindow
     {
