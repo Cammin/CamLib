@@ -7,12 +7,22 @@ namespace CamLib
     /// </summary>
     public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
-        private static T _instance = null;
+        public bool _doNotDestroyOnLoad = true;
+        
+        private static T _instance;
         
         /// <summary>
         /// If trying to access an instance every update (or a lot) that may not exist, but so it's not doing FindAnyObjectByType every time
         /// </summary>
         public static bool HasInstance => _instance != null;
+
+#if UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        public static void ResetInstance()
+        {
+            _instance = null;
+        }
+#endif
         
         public static T Instance
         {
@@ -30,27 +40,30 @@ namespace CamLib
                     return _instance;
                 }
                 
-                //We should always assert that an expected singleton should exist
-                Debug.LogError($"No singleton found for {typeof(T).Name}.");
+                Debug.LogError($"{typeof(T).Name} singleton not found in the scene.");
                 return null;
             }
-        }
-        
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetVars()
-        {
-            _instance = null;
         }
 
         protected virtual void Awake()
         {
-            if (_instance != null)
+            if (_instance)
             {
+                if (_doNotDestroyOnLoad)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+                
                 Debug.LogWarning($"Singleton instance already exists! {_instance.name}", gameObject);
                 return;
             }
 
             _instance = this as T;
+            if (_doNotDestroyOnLoad)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
         }
     }
 }
