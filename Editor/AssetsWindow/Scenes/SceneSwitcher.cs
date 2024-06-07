@@ -8,23 +8,26 @@ namespace CamLib.Editor
     {
         public List<SceneCategory> Categories = new List<SceneCategory>();
 
-        public void GetScenes()
+        public void GetScenes(CentralizedAssetWindowImplementation impl)
         {
-            string folderPath = "Assets/_Game/Scenes";
-            string[] guids = AssetDatabase.FindAssets("t:Scene", new string[] { folderPath });
-
-            Categories.Clear();
-            foreach (string guid in guids)
+            string[] folderPaths = impl.SceneFolders;
+            foreach (string folderPath in folderPaths)
             {
-                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                string categoryName = Path.GetDirectoryName(assetPath);
-                SceneCategory category = GetOrCreateCategory(categoryName);
-                category.AddPath(assetPath);
-            }
+                string[] guids = AssetDatabase.FindAssets("t:Scene", new string[] { folderPath });
 
-            foreach (SceneCategory category in Categories)
-            {
-                category.Sort();
+                Categories.Clear();
+                foreach (string guid in guids)
+                {
+                    string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                    string categoryName = Path.GetDirectoryName(assetPath);
+                    SceneCategory category = GetOrCreateCategory(categoryName);
+                    category.AddPath(assetPath);
+                }
+
+                foreach (SceneCategory category in Categories)
+                {
+                    category.Sort();
+                }
             }
         }
 

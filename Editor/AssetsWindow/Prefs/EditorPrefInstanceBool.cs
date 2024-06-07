@@ -6,6 +6,10 @@ namespace CamLib.Editor
     [Serializable]
     public class EditorPrefInstanceBool : EditorPrefInstance<bool>
     {
+        public EditorPrefInstanceBool(string prefKey, string displayName, string icon) : base(prefKey, displayName, icon)
+        {
+        }
+
         public override bool GetValue()
         {
             return EditorPrefs.GetBool(Key, false);

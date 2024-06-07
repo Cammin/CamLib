@@ -6,6 +6,10 @@ namespace CamLib.Editor
     [Serializable]
     public class EditorPrefInstanceInt : EditorPrefInstance<int>
     {
+        public EditorPrefInstanceInt(string prefKey, string displayName, string icon) : base(prefKey, displayName, icon)
+        {
+        }
+        
         public override int GetValue()
         {
             return EditorPrefs.GetInt(Key, 0);

@@ -10,27 +10,10 @@ namespace CamLib.Editor
     {
         public List<IEditorPrefInstance> Items = new List<IEditorPrefInstance>();
         
-        public void Initialize()
+        public void Initialize(CentralizedAssetWindowImplementation impl)
         {
             Items.Clear();
-            
-            //todo make this extendable
-            //AddBool(EditorPrefStartBootstrap.KEY, "Start Bootstrap", "d_VideoPlayer Icon");
-            //AddBool(EditorPrefBypassStartup.KEY, "Bypass to Lobby", "d_NetworkLobbyManager Icon");
-            //AddInt(EditorPrefStartCount.KEY, "Players to Start", "d_NetworkManager Icon");
-        }
-        
-        public void AddBool(string prefKey, string displayName, string icon)
-        {
-            EditorPrefInstanceBool prefBool = new EditorPrefInstanceBool();
-            prefBool.Initialize(prefKey, displayName, icon);
-            Items.Add(prefBool);
-        }
-        public void AddInt(string prefKey, string displayName, string icon)
-        {
-            EditorPrefInstanceInt prefInt = new EditorPrefInstanceInt();
-            prefInt.Initialize(prefKey, displayName, icon);
-            Items.Add(prefInt);
+            Items.AddRange(impl.Prefs);
         }
         
         public void OnGUI()

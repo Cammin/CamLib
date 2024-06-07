@@ -9,12 +9,14 @@ namespace CamLib.Editor
         protected T Value;
         protected GUIContent Content;
         
-        public void Initialize(string prefKey, string displayName, string icon)
+        public EditorPrefInstance(string prefKey, string displayName, string icon)
         {
             Key = prefKey;
 
             Texture image = EditorGUIUtility.IconContent(icon, displayName).image;
             Content = new GUIContent(displayName, image, prefKey);
+            
+            // ReSharper disable once VirtualMemberCallInConstructor
             Value = GetValue();
         }
 

@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -21,6 +23,7 @@ namespace CamLib.Editor
         public AssetDisplay Assets = new AssetDisplay();
 
         private Vector2 Scroll;
+        private CentralizedAssetWindowImplementation Impl;
         
         [MenuItem("Tools/CamLib/AssetWindow")]
         public static void GetAWindow()
@@ -36,18 +39,33 @@ namespace CamLib.Editor
         /// </summary>
         private void InitializeThings()
         {
+            if (Impl == null)
+            {
+                Type type = TypeCache.GetTypesDerivedFrom<CentralizedAssetWindowImplementation>().FirstOrDefault();
+                if (type != null)
+                {
+                    Impl = Activator.CreateInstance(type) as CentralizedAssetWindowImplementation;
+                }
+            }
+
+            if (Impl == null)
+            {
+                Debug.LogError("No CentralizedAssetWindowImplementation found. Please create one.");
+                return;
+            }
+
             Profiler.BeginSample("CentralizedAssetWindow.Init");
             {
                 Profiler.BeginSample("Initialize.Scenes");
-                Scenes.GetScenes();
+                Scenes.GetScenes(Impl);
                 Profiler.EndSample();
 
                 Profiler.BeginSample("Initialize.Scenes");
-                Assets.Initialize();
+                Assets.Initialize(Impl);
                 Profiler.EndSample();
 
                 Profiler.BeginSample("Initialize.Scenes");
-                Prefs.Initialize();
+                Prefs.Initialize(Impl);
                 Profiler.EndSample();
             }
             Profiler.EndSample();

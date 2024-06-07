@@ -12,14 +12,15 @@ namespace CamLib.Editor
             
         public void Sort()
         {
-            MetaData = MetaData.OrderBy(data =>
+            //todo cannot sort right now, need better custom implementation
+            /*MetaData = MetaData.OrderBy(data =>
             {
                 if (data.Name == "Bootstrap") return "_a";
                 if (data.Name == "MainMenu") return "_b";
                 if (data.Name == "Lobby") return "_c";
                 if (data.Name == "Gameplay") return "_d";
                 return data.Name;
-            }).ToList();
+            }).ToList();*/
         }
 
         public void DrawCollection()
