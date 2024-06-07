@@ -9,6 +9,8 @@ This package would contain general functionality that can apply to any Unity pro
 In particular, there's some notable tools:
 - Centralized asset display window
 - Save/Load system with interactive data editor window
+- Build version auto-incrementation
+- And many various utility scripts
 
 ## Disclaimer
 - I don't give any regard to compatibility or unity version, so beware!
