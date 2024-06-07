@@ -1,16 +1,28 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace CamLib
 {
-    [PublicAPI]
     public static class CollectionExtensions
     {
         public static bool IsNullOrEmpty<T>(this ICollection<T> list)
         {
             return list == null || list.Count == 0;
+        }
+        
+        public static bool IsIndexValid<T>(this ICollection<T> list, int index)
+        {
+            if (list == null) return false;
+            if (list.Count <= index) return false;
+            if (index < 0) return false;
+            return true;
+        }
+        
+        public static T Pop<T>(this IList<T> list)
+        {
+            T thing = list[^1];
+            list.RemoveAt(list.Count-1);
+            return thing;
         }
         
         public static T[] Shuffle<T> (this T[] list)
@@ -22,6 +34,7 @@ namespace CamLib
             }
             return list;
         }
+        
         public static IList<T> Shuffle<T> (this IList<T> list)
         {
             for (int i = 0; i < list.Count; i++)
@@ -32,25 +45,26 @@ namespace CamLib
             return list;
         }
         
-        public static T GetRandomElement<T>(this T[] collection)
+        public static T GetRandomElement<T>(this T[] array)
         {
-            if (collection.IsNullOrEmpty())
+            if (array.IsNullOrEmpty())
             {
                 return default;
             }
 
-            int random = Random.Range(0, collection.Length);
-            return collection.ElementAt(random);
+            int random = Random.Range(0, array.Length);
+            return array[random];
         }
-        public static T GetRandomElement<T>(this IList<T> collection)
+        
+        public static T GetRandomElement<T>(this IList<T> list)
         {
-            if (collection.IsNullOrEmpty())
+            if (list.IsNullOrEmpty())
             {
                 return default;
             }
 
-            int random = Random.Range(0, collection.Count);
-            return collection.ElementAt(random);
+            int random = Random.Range(0, list.Count);
+            return list[random];
         }
     }
 }
