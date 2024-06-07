@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace CamLib
 {
+    /// <summary>
+    /// Put on an int to pick in a dropdown, a sorting order!
+    /// </summary>
     [CustomPropertyDrawer(typeof(SortingLayerAttribute))]
     public class SortingLayerDrawer : PropertyDrawer
     {

@@ -1,6 +1,8 @@
 namespace CamLib
 {
-    //to make this data able to be extended from for any project, this must be inherited from as a custom class now
+    /// <summary>
+    /// Derive from this class and serve as your game's master save data class.
+    /// </summary>
     public abstract class GameData
     {
         public long LastUpdated;

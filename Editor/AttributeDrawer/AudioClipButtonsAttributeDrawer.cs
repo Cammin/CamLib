@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CamLib.Editor
 {
+    /// <summary>
+    /// Simple attribute to add play and stop buttons to AudioClip fields.
+    /// </summary>
     [CustomPropertyDrawer(typeof(AudioClipButtonsAttribute))]
     public class AudioClipButtonsAttributeDrawer : PropertyDrawer
     {

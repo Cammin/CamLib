@@ -1,12 +1,15 @@
-﻿using JetBrains.Annotations;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Audio;
 
 namespace CamLib
 {
-    [PublicAPI]
     public static class ExtensionsAudioMixer
     {
+        /// <summary>
+        /// Wonderful function to serve 
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="normalizedVolume"></param>
         public static void SetNormalizedVolume(this AudioMixerGroup group, float normalizedVolume)
         {
             normalizedVolume = Mathf.Clamp(normalizedVolume, 0.001f, 1);

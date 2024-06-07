@@ -13,7 +13,6 @@ namespace CamLib
             {
                 behaviour.StopCoroutine(coroutine);
             }
-
             return behaviour.StartCoroutine(routine);
         }
     }

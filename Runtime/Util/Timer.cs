@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CamLib
 {
-	public class GameTimer
+	public class Timer
 	{
 		private float _startTime = -1;
 		private float _endTime = -1;
@@ -15,7 +15,7 @@ namespace CamLib
 		public float Ratio => Elapsed / Duration;
 		public float RatioReverse => 1 - Ratio;
 
-		public GameTimer Set(float time)
+		public Timer Set(float time)
 		{
 			_startTime = Time.time;
 			_endTime = _startTime + time;
@@ -24,9 +24,9 @@ namespace CamLib
 			return this;
 		}
 		
-		public static GameTimer CreateAndSet(float time)
+		public static Timer StartNew(float time)
 		{
-			return new GameTimer().Set(time);
+			return new Timer().Set(time);
 		}
 	}
 }

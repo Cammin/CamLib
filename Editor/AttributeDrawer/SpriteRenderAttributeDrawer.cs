@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CamLib.Editor
 {
+    /// <summary>
+    /// WARNING: This is a pretty bad implementation of trying to draw a sprite. Todo maybe change this so you need to hover over a field to see the graphic?
+    /// </summary>
     [CustomPropertyDrawer(typeof(SpriteRenderAttribute))]
     public class SpriteRenderAttributeDrawer : PropertyDrawer
     {

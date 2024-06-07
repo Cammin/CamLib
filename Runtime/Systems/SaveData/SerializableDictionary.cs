@@ -1,11 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 
 namespace CamLib
 {
+    /// <summary>
+    /// For use with the GameData class.
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
     [System.Serializable]
     public class SerializableDictionary<TValue> : Dictionary<string, TValue>, ISerializationCallbackReceiver
     {

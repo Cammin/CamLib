@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CamLib
 {
-    public class FileDataHandler<T> where T : GameData
+    internal class FileDataHandler<T> where T : GameData
     {
         private string dataDirPath = "";
         private string dataFileName = "";

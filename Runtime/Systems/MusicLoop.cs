@@ -2,10 +2,13 @@
 
 namespace CamLib
 {
+    /// <summary>
+    /// Simple component that starts music with an intro, then loop.
+    /// </summary>
     public class MusicLoop : MonoBehaviour
     {
-        [SerializeField] private AudioSource _startSource = null;
-        [SerializeField] private AudioSource _loopSource = null;
+        public AudioSource _startSource = null;
+        public AudioSource _loopSource = null;
 
         private void Awake()
         {

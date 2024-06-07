@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CamLib.Editor
 {
+    /// <summary>
+    /// Simple attribute to just disable gui!
+    /// </summary>
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyAttributeDrawer : PropertyDrawer
     {

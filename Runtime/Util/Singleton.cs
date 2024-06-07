@@ -2,9 +2,17 @@
 
 namespace CamLib
 {
+    /// <summary>
+    /// Straightforward singleton
+    /// </summary>
     public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
         private static T _instance = null;
+        
+        /// <summary>
+        /// If trying to access an instance every update (or a lot) that may not exist, but so it's not doing FindAnyObjectByType every time
+        /// </summary>
+        public static bool HasInstance => _instance != null;
         
         public static T Instance
         {
@@ -22,11 +30,9 @@ namespace CamLib
                     return _instance;
                 }
                 
-                //create if not found
-                GameObject obj = new GameObject(typeof(T).Name);
-                _instance = obj.AddComponent<T>();
-                Debug.LogWarning("A singleton instance was created; didn't exist in the scene.", _instance.gameObject);
-                return _instance;
+                //We should always assert that an expected singleton should exist
+                Debug.LogError($"No singleton found for {typeof(T).Name}.");
+                return null;
             }
         }
         
@@ -40,7 +46,7 @@ namespace CamLib
         {
             if (_instance != null)
             {
-                Debug.LogWarning($"Singleton instance already exists! {_instance.name}");
+                Debug.LogWarning($"Singleton instance already exists! {_instance.name}", gameObject);
                 return;
             }
 

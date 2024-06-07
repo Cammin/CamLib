@@ -8,6 +8,10 @@ using UnityEngine.SceneManagement;
 
 namespace CamLib
 {
+    /// <summary>
+    /// Derive an empty class from this where T is the data class you want to serialize.
+    /// Add this component to your scene to manage save data.
+    /// </summary>
     public abstract class DataPersistenceManager<T> : MonoBehaviour where T : GameData
     {
         [Header("Debugging")]
@@ -30,11 +34,10 @@ namespace CamLib
         private FileDataHandler<T> _dataHandler;
         private string _selectedProfileId = "";
         private Coroutine _autoSaveCoroutine;
-    
-        [PublicAPI]
+        
         public static DataPersistenceManager<T> Instance { get; private set; }
 
-        [PublicAPI] public int PersistentObjectCount => _dataPersistenceObjects.Count;
+        public int PersistentObjectCount => _dataPersistenceObjects.Count;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         public static void ResetStatics()
@@ -222,8 +225,18 @@ namespace CamLib
 
         private List<IDataPersistence<T>> FindAllDataPersistenceObjects() 
         {
-            IEnumerable<IDataPersistence<T>> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>(true).OfType<IDataPersistence<T>>();
-            return new List<IDataPersistence<T>>(dataPersistenceObjects);
+            var monos = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var dataPersistenceObjects = new List<IDataPersistence<T>>();
+    
+            foreach (var mono in monos)
+            {
+                if (mono is IDataPersistence<T> dataPersistenceObj)
+                {
+                    dataPersistenceObjects.Add(dataPersistenceObj);
+                }
+            }
+
+            return dataPersistenceObjects;
         }
 
         [PublicAPI]
