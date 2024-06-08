@@ -13,8 +13,14 @@ namespace CamLib.Editor
         {
             Key = prefKey;
 
-            Texture image = EditorGUIUtility.IconContent(icon, displayName).image;
-            Content = new GUIContent(displayName, image, prefKey);
+            Content = new GUIContent(displayName, null, prefKey);
+
+            
+            if (!icon.IsNullOrEmpty())
+            {
+                Texture image = EditorGUIUtility.IconContent(icon, displayName).image;
+                Content.image = image;
+            }
             
             // ReSharper disable once VirtualMemberCallInConstructor
             Value = GetValue();
