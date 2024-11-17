@@ -13,7 +13,7 @@ namespace CamLib.Editor
         public GUIContent Content;
         public Texture Preview;
         public Texture Mini;
-        public Texture Image;
+        public GUIContent ImageContent;
 
         private GUIStyle IconStyle;
         private GUIStyle TextStyle;
@@ -26,6 +26,11 @@ namespace CamLib.Editor
             Content = new GUIContent()
             {
                 text = Obj.name,
+                tooltip = "Ping"
+            };
+            ImageContent = new GUIContent()
+            {
+                tooltip = "Open"
             };
             
             TryLoad();
@@ -43,7 +48,7 @@ namespace CamLib.Editor
                 Preview = AssetPreview.GetAssetPreview(Obj);
             }
 
-            Image = Preview ? Preview : Mini;
+            ImageContent.image = Preview ? Preview : Mini;
         }
 
         public void Draw()
@@ -67,7 +72,7 @@ namespace CamLib.Editor
             
             using (new GUILayout.HorizontalScope())
             {
-                if (GUILayout.Button(Image, IconStyle, GUILayout.Height(height), GUILayout.Width(height)))
+                if (GUILayout.Button(ImageContent, IconStyle, GUILayout.Height(height), GUILayout.Width(height)))
                 {
                     AssetDatabase.OpenAsset(Obj);
                 }

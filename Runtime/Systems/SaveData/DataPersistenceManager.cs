@@ -38,11 +38,13 @@ namespace CamLib
 
         public int PersistentObjectCount => _dataPersistenceObjects.Count;
 
+#if  UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         public static void ResetStatics()
         {
             Instance = null;
         }
+#endif
 
         private void Awake() 
         {
