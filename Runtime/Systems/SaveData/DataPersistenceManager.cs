@@ -59,7 +59,7 @@ namespace CamLib
 
             if (_disableDataPersistence) 
             {
-                Debug.LogWarning("Data Persistence is currently disabled!");
+                Debug.LogWarning("Data Persistence is currently disabled");
             }
 
             InitializeDataHandler();

@@ -7,7 +7,7 @@ namespace CamLib
     /// </summary>
     public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
-        public bool _doNotDestroyOnLoad = true;
+        public bool _doNotDestroyOnLoad = false;
         
         private static T _instance;
         
@@ -33,14 +33,15 @@ namespace CamLib
                     return _instance;
                 }
             
-                //find if nonexistent
+                //find if nonexistent because race conditions
                 _instance = FindAnyObjectByType<T>(FindObjectsInactive.Include);
                 if (_instance != null)
                 {
+                    Debug.Log($"{typeof(T).Name} cached via FindAnyObjectByType");
                     return _instance;
                 }
                 
-                Debug.LogError($"{typeof(T).Name} singleton not found in the scene.");
+                Debug.LogError($"Singleton {typeof(T).Name} not found.");
                 return null;
             }
         }
@@ -55,11 +56,12 @@ namespace CamLib
                     return;
                 }
                 
-                Debug.LogWarning($"Singleton instance already exists! {_instance.name}", gameObject);
+                Debug.LogWarning($"Singleton {typeof(T).Name} instance already exists! {_instance.name}", gameObject);
                 return;
             }
 
             _instance = this as T;
+            //Debug.Log($"Singleton {typeof(T).Name} cached");
             if (_doNotDestroyOnLoad)
             {
                 DontDestroyOnLoad(gameObject);
