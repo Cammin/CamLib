@@ -8,7 +8,7 @@ This package would contain general functionality that can be applied to any Unit
 
 In particular, there are some notable tools:
 - Centralized asset display window
-- Save/Load system with interactive data editor window
+- Save/Load system with interactive data editor window and version migration
 - Build version auto-incrementation and easy zipping
 - And many various utility scripts
 
