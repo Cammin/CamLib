@@ -2,7 +2,7 @@
 [![Compatibility](https://img.shields.io/badge/-2022.3-11191F?logo=Unity)](https://unity3d.com/get-unity/download/archive)
 [![GitHub Repo stars](https://img.shields.io/github/stars/Cammin/CamLib?color=%23dca&label=%E2%AD%90)](https://github.com/Cammin/CamLib)
 
-My personal utilities package.  
+My personal utilities library package.  
 This will gradually gain updates as it sees fit during personal project developments.  
 This package would contain general functionality that can be applied to any Unity project.
 
