@@ -131,7 +131,7 @@ namespace CamLib
             if (!string.IsNullOrEmpty(testProfile))
             {
                 _selectedProfileId = testProfile;
-                Debug.LogWarning($"Loaded TEST profile \"{testProfile}\"");
+                Debug.LogWarning($"Loading TEST profile \"{testProfile}\"");
             }
             else
             {
@@ -154,7 +154,7 @@ namespace CamLib
         {
             profileId ??= _selectedProfileId;
 
-            if (DataPersistenceEditorPrefs.DisableDataPersistence)
+            if (Application.isPlaying && DataPersistenceEditorPrefs.DisableDataPersistence)
             {
                 Debug.Log("Tried loading but was disabled for editor");
                 return null;
@@ -167,7 +167,7 @@ namespace CamLib
             // start a new game if the data is null and we're configured to initialize data for debugging purposes
             if (_activeData == null && DataPersistenceEditorPrefs.InitializeDataIfNull) 
             {
-                Debug.Log("Save data: Initialized debug save file");
+                Debug.Log($"Save data: Initialized debug save file for \"{profileId}\"");
                 NewGame();
             }
             #endif
@@ -242,7 +242,7 @@ namespace CamLib
             }
             
             // return right away if data persistence is disabled
-            if (DataPersistenceEditorPrefs.DisableDataPersistence) 
+            if (Application.isPlaying && DataPersistenceEditorPrefs.DisableDataPersistence) 
             {
                 Debug.Log("Tried saving but was disabled for editor");
                 return;

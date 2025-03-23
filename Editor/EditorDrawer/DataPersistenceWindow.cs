@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,12 +16,22 @@ namespace CamLib.Editor
 
         public SerializedObject _serializedObject;
         public SerializedProperty _propSaveData;
-        public SerializedProperty _propManagerPrefab;
+        public SerializedProperty _propManagerObj;
         public SerializedProperty _propId;
 
         public DataPersistenceManager<T> _managerPrefab;
         public SerializedObject _managerObj;
         public SerializedProperty _managerPropFileName;
+
+        private GUIContent managerContent;
+        
+        private GUIContent contentPrefDisableDataPersistence;
+        private GUIContent contentPrefInitializeDataIfNull;
+        private GUIContent contentPrefLoadBeforeFirstSceneLoad;
+        private GUIContent contentPrefTestSelectedProfileId;
+        
+        
+        
         
         private Vector2 scroll;
         
@@ -40,32 +51,47 @@ namespace CamLib.Editor
         {
             _serializedObject = new SerializedObject(this);
             _propId = _serializedObject.FindProperty(nameof(_profileId));
-            _propManagerPrefab = _serializedObject.FindProperty(nameof(_managerPrefab));
+            _propManagerObj = _serializedObject.FindProperty(nameof(_managerPrefab));
             _propSaveData = _serializedObject.FindProperty(nameof(_gameData));
+
+            
+             
+            
+            managerContent = new GUIContent("Manager Object", "The object that manages the data");
+
+            contentPrefDisableDataPersistence = new GUIContent("Disable Data Persistence", EditorGUIUtility.IconContent("d_CacheServerDisabled").image, "Turns off saving/loading. Good if you just want to test the game unhindered by save data influence");
+            contentPrefInitializeDataIfNull = new GUIContent("Initialize Data If Null", EditorGUIUtility.IconContent("d_CreateAddNew").image, "If no save data can be found, create a save file");
+            contentPrefLoadBeforeFirstSceneLoad = new GUIContent("Load Before First Scene Load", EditorGUIUtility.IconContent("Loading").image, "Do this if you must. It's a bit of a hack to load data before the first scene loads");
+            contentPrefTestSelectedProfileId = new GUIContent("Test Selected Profile Id", EditorGUIUtility.IconContent("d_DebuggerEnabled").image, "Forceably start with a specific save file. Good for trying to reproduce a bug from a specific state");
         }
 
         public void OnGUI()
         {
             _serializedObject.Update();
+
+            float labelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 190;
             DrawGui();
+            EditorGUIUtility.labelWidth = labelWidth;
             _serializedObject.ApplyModifiedProperties();
         }
 
         private void DrawGui()
         {
-            if (GUILayout.Button("Open Save Path"))
-            {
-                Application.OpenURL(Application.persistentDataPath);
-            }
+            DataPersistenceEditorPrefs.DisableDataPersistence = EditorGUILayout.Toggle(contentPrefDisableDataPersistence, DataPersistenceEditorPrefs.DisableDataPersistence);
+            DataPersistenceEditorPrefs.InitializeDataIfNull = EditorGUILayout.Toggle(contentPrefInitializeDataIfNull, DataPersistenceEditorPrefs.InitializeDataIfNull);
+            DataPersistenceEditorPrefs.LoadBeforeFirstSceneLoad = EditorGUILayout.Toggle(contentPrefLoadBeforeFirstSceneLoad, DataPersistenceEditorPrefs.LoadBeforeFirstSceneLoad);
+            DataPersistenceEditorPrefs.TestSelectedProfileId = EditorGUILayout.TextField(contentPrefTestSelectedProfileId, DataPersistenceEditorPrefs.TestSelectedProfileId);
             
-
-            EditorGUILayout.PropertyField(_propManagerPrefab);
-            if (_propManagerPrefab.objectReferenceValue == null)
+            EditorGUILayout.Space();
+            
+            EditorGUILayout.PropertyField(_propManagerObj, managerContent);
+            if (_propManagerObj.objectReferenceValue == null)
             {
                 EditorGUILayout.HelpBox("Assign the instance/prefab to begin", MessageType.Warning);
                 return;
             }
-
+            
             if (_managerObj == null)
             {
                 _managerObj = new SerializedObject(_managerPrefab);
@@ -73,12 +99,18 @@ namespace CamLib.Editor
             }
             _managerObj.Update();
 
-            EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(_propId);
             if (string.IsNullOrEmpty(_propId.stringValue))
             {
                 EditorGUILayout.HelpBox("Set a profile", MessageType.Warning);
+
+                string[] dirs = Directory.GetDirectories(Application.persistentDataPath);
+                foreach (string s in dirs)
+                {
+                    EditorGUILayout.LabelField(s, EditorStyles.miniLabel);
+                }
+
                 return;
             }
 
@@ -87,16 +119,12 @@ namespace CamLib.Editor
             EditorGUILayout.LabelField(path, EditorStyles.miniLabel);
 
             bool dirExists = Directory.Exists(dir);
-            if (!dirExists)
-            {
-                EditorGUILayout.HelpBox("Directory does not yet exist; Can save but cannot load", MessageType.Info);
-            }
+            
             
             bool fileExists = File.Exists(path);
-            if (dirExists && !fileExists)
-            {
-                EditorGUILayout.HelpBox("File does not exist; Can save but cannot load. Check the folder's contents and ensure nothing is corrupted", MessageType.Warning);
-            }
+            
+            
+            GUILayout.BeginHorizontal();
             
             if (GUILayout.Button("Save"))
             {
@@ -117,8 +145,34 @@ namespace CamLib.Editor
                     _managerPrefab.InitializeDataHandler();
                     _managerPrefab.ClearProfileData(_profileId);
                 }
+                
             }
+            
+            if (GUILayout.Button("Clear"))
+            {
+                _gameData = (T)Activator.CreateInstance(typeof(T));
+                _gameData.OnConstruct();
+            }
+            
+            GUILayout.FlexibleSpace();
+            
+            if (GUILayout.Button("Open Save Path"))
+            {
+                Application.OpenURL(Application.persistentDataPath);
+            }
+            
+            GUILayout.EndHorizontal();
 
+            if (!dirExists)
+            {
+                EditorGUILayout.HelpBox("Directory does not yet exist; Can save but cannot load", MessageType.Info);
+            }
+            
+            if (dirExists && !fileExists)
+            {
+                EditorGUILayout.HelpBox("File does not exist; Can save but cannot load. Check the folder's contents and ensure nothing is corrupted", MessageType.Warning);
+            }
+            
             if (_propSaveData == null)
             {
                 EditorGUILayout.HelpBox("Save Data property appears to be null. Ensure your data is serializable", MessageType.Error);

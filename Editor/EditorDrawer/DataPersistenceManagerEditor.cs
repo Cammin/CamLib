@@ -27,7 +27,8 @@ namespace CamLib.Editor
             {
                 foreach (var obj in manager.DataPersistenceGameObjects)
                 {
-                    EditorGUILayout.ObjectField(obj, typeof(GameObject), true);
+                    GUIContent content = new GUIContent(obj.name);
+                    EditorGUILayout.ObjectField(content, obj, typeof(GameObject), true);
                 }
             }
             
