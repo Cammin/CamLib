@@ -1,3 +1,5 @@
+using System;
+
 namespace CamLib
 {
     /// <summary>
@@ -6,11 +8,18 @@ namespace CamLib
     public abstract class GameData
     {
         public long LastUpdated;
+        public string BuildVersion;
 
         /// <summary>
         /// the values defined in this constructor will be the default values
         /// the game starts with when there's no data to load
         /// </summary>
         public virtual void OnConstruct() {} 
+        
+        /// <summary>
+        /// If you update your game and introduce bugs related to save data, this can be used to repair it
+        /// Potentially usable for migrating backwards as well
+        /// </summary>
+        public virtual void MigrateVersion(Version lastVersion, Version currentVersion) {}
     }
 }

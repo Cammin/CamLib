@@ -13,30 +13,38 @@ namespace CamLib
     /// </summary>
     public abstract class DataPersistenceManager<T> : MonoBehaviour where T : GameData
     {
-        [Header("Debugging")]
-        [SerializeField] private bool _disableDataPersistence = false;
-        [SerializeField] private bool _initializeDataIfNull = false;
-        [SerializeField] private bool _loadBeforeFirstSceneLoad = false;
-        [Space]
-        [SerializeField] private bool _overrideSelectedProfileId = false;
-        [SerializeField] private string _testSelectedProfileId = "test";
-
-        [Header("File Storage Config")]
         [SerializeField] private string _fileName = "save.data";
         [SerializeField] private bool _useEncryption;
+        [Tooltip("Leave as 0 to disable")]
+        [SerializeField] private float _autoSaveTimeSeconds = 0f;
 
-        [Header("Auto Saving Configuration")]
-        [SerializeField] private float _autoSaveTimeSeconds = 60f;
-
-        private T _gameData;
-        private List<IDataPersistence<T>> _dataPersistenceObjects = new List<IDataPersistence<T>>();
+        /// <summary>
+        /// Our active hot save data. it will eventually read/write with a specified profile
+        /// </summary>
+        private T _activeData;
+        
+        /// <summary>
+        /// The objects in the active scene that will interact with the save data 
+        /// </summary>
+        internal List<IDataPersistence<T>> DataPersistenceObjects = new List<IDataPersistence<T>>();
+        internal List<GameObject> DataPersistenceGameObjects = new List<GameObject>();
+        
+        /// <summary>
+        /// Object that saves/loads the data to/from a file
+        /// </summary>
         private FileDataHandler<T> _dataHandler;
+        
+        /// <summary>
+        /// Current profile. Talks to the file reader/writer
+        /// </summary>
         private string _selectedProfileId = "";
+        
         private Coroutine _autoSaveCoroutine;
         
         public static DataPersistenceManager<T> Instance { get; private set; }
 
-        public int PersistentObjectCount => _dataPersistenceObjects.Count;
+        public int PersistentObjectCount => DataPersistenceObjects.Count;
+        public bool HasGameData => _activeData != null;
 
 #if  UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -57,9 +65,10 @@ namespace CamLib
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            if (_disableDataPersistence) 
+            if (DataPersistenceEditorPrefs.DisableDataPersistence) 
             {
-                Debug.LogWarning("Data Persistence is currently disabled");
+                Debug.LogWarning("Data Persistence is disabled");
+                return;
             }
 
             InitializeDataHandler();
@@ -84,139 +93,185 @@ namespace CamLib
 
         private void Start()
         {
-            if (_loadBeforeFirstSceneLoad)
+            if (DataPersistenceEditorPrefs.LoadBeforeFirstSceneLoad)
             {
-                SetupLoadingMecanism();
+                InitializeSaveSystem();
             }
         }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => SetupLoadingMecanism();
-        private void SetupLoadingMecanism()
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => InitializeSaveSystem();
+        protected virtual void InitializeSaveSystem()
         {
-            _dataPersistenceObjects = FindAllDataPersistenceObjects();
+            DataPersistenceObjects = FindAllPersistenceObjectsInScene();
             LoadGame();
-
-            // start up the auto saving coroutine
-            if (_autoSaveCoroutine != null)
-            {
-                StopCoroutine(_autoSaveCoroutine);
-            }
-
-            _autoSaveCoroutine = StartCoroutine(AutoSave());
+            TryAutoSave();
         }
-
-        [PublicAPI]
-        public void ChangeSelectedProfileId(string newProfileId) 
+        
+        public void SetProfile(string newProfileId) 
         {
-            // update the profile to use for saving and loading
             _selectedProfileId = newProfileId;
-            // load the game, which will use that profile, updating our game data accordingly
             LoadGame();
         }
-
-        [PublicAPI]
-        public void DeleteProfileData(string profileId) 
+        
+        public void ClearProfileData(string profileId) 
         {
-            // delete the data for this profile id
             _dataHandler.Delete(profileId);
-            // initialize the selected profile id
-            InitializeSelectedProfileId();
-            // reload the game so that our data matches the newly selected profile id
-            LoadGame();
+
+            //reload anything possible after having deleted data
+            if (Application.isPlaying)
+            {
+                InitializeSelectedProfileId();
+                LoadGame();
+            }
         }
 
         private void InitializeSelectedProfileId() 
         {
-            _selectedProfileId = _dataHandler.GetMostRecentlyUpdatedProfileId();
-            if (_overrideSelectedProfileId) 
+            string testProfile = DataPersistenceEditorPrefs.TestSelectedProfileId;
+            if (!string.IsNullOrEmpty(testProfile))
             {
-                _selectedProfileId = _testSelectedProfileId;
-                Debug.LogWarning("Overrode selected profile id with test id: " + _testSelectedProfileId);
+                _selectedProfileId = testProfile;
+                Debug.LogWarning($"Loaded TEST profile \"{testProfile}\"");
+            }
+            else
+            {
+                _selectedProfileId = _dataHandler.FindMostRecentlyUpdatedProfileId();
             }
         }
 
         [PublicAPI]
         public void NewGame()
         {
-            _gameData = (T)Activator.CreateInstance(typeof(T));
-            _gameData.OnConstruct();
+            _activeData = (T)Activator.CreateInstance(typeof(T));
+            _activeData.OnConstruct();
         }
 
+        /// <summary>
+        /// load the game, which will use that profile, updating our game data accordingly
+        /// </summary>
         [PublicAPI]
         public T LoadGame(string profileId = null)
         {
             profileId ??= _selectedProfileId;
 
-            // return right away if data persistence is disabled
-            if (_disableDataPersistence) 
+            if (DataPersistenceEditorPrefs.DisableDataPersistence)
             {
+                Debug.Log("Tried loading but was disabled for editor");
                 return null;
             }
 
             // load any saved data from a file using the data handler
-            _gameData = _dataHandler.Load(profileId);
+            _activeData = _dataHandler.Load(profileId);
 
+            #if UNITY_EDITOR
             // start a new game if the data is null and we're configured to initialize data for debugging purposes
-            if (_gameData == null && _initializeDataIfNull) 
+            if (_activeData == null && DataPersistenceEditorPrefs.InitializeDataIfNull) 
             {
+                Debug.Log("Save data: Initialized debug save file");
                 NewGame();
             }
+            #endif
 
             // if no data can be loaded, don't continue
-            if (_gameData == null) 
+            if (_activeData == null) 
             {
-                Debug.Log("No data was found. A New Game needs to be started before data can be loaded.");
+                Debug.LogWarning("No data was found. A New Game needs to be started before data can be loaded.");
                 return null;
             }
 
+            TryMigrateVersion();
+            
             if (Application.isPlaying)
             {
+                OnBeforePersistentObjectsLoadData(_activeData);
+                
                 // push the loaded data to all other scripts that need it
-                foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects)
+                foreach (IDataPersistence<T> dataPersistenceObj in DataPersistenceObjects)
                 {
-                    dataPersistenceObj?.LoadData(_gameData);
+                    dataPersistenceObj?.LoadData(_activeData);
                 }
             }
 
-            return _gameData;
+            return _activeData;
         }
 
+        /// <summary>
+        /// When the save data is loaded, but before the data is applied for all persistence objects. Use if you want to authorize something beforehand like level information
+        /// </summary>
+        protected virtual void OnBeforePersistentObjectsLoadData(T data)
+        {
+        }
+
+        /// <summary>
+        /// If there are save-related bugs like broken unique ids, this can be used to repair it. It wil also make the save data changed to the new one
+        /// </summary>
+        protected virtual void TryMigrateVersion()
+        {
+            string lastVersionString = _activeData.BuildVersion;
+            string currentVersionString = Application.version;
+            
+            try
+            {
+                Version lastVersion = new Version(lastVersionString);
+                Version currentVersion = new Version(currentVersionString);
+
+                if (lastVersion != currentVersion)
+                {
+                    Debug.LogWarning($"Migrate Save data! from {lastVersion} to {currentVersion}");
+                    _activeData.MigrateVersion(lastVersion, currentVersion);
+                    _activeData.BuildVersion = Application.version;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed migration attempt: from \"{lastVersionString}\" to \"{currentVersionString}\":\n{e}");
+            }
+        }
+
+        /// <summary>
+        /// Call this before you load a new scene so that persistence objects properly write their state before they are destroyed!
+        /// This 
+        /// </summary>
         [PublicAPI]
         public void SaveGame(string profileId = null, T overrideData = null)
         {
             profileId ??= _selectedProfileId;
             if (overrideData != null)
             {
-                _gameData = overrideData;
+                _activeData = overrideData;
             }
             
             // return right away if data persistence is disabled
-            if (_disableDataPersistence) 
+            if (DataPersistenceEditorPrefs.DisableDataPersistence) 
             {
+                Debug.Log("Tried saving but was disabled for editor");
                 return;
             }
 
-            // if we don't have any data to save, log a warning here
-            if (_gameData == null) 
+            if (_activeData == null) 
             {
-                Debug.LogWarning("No data was found. A New Game needs to be started before data can be saved.");
+                Debug.LogWarning("Tried to save NULL data, cancelled.");
                 return;
             }
 
             if (Application.isPlaying)
             {
                 // pass the data to other scripts so they can update it
-                foreach (IDataPersistence<T> dataPersistenceObj in _dataPersistenceObjects) 
+                foreach (IDataPersistence<T> dataPersistenceObj in DataPersistenceObjects) 
                 {
-                    dataPersistenceObj?.SaveData(_gameData);
+                    dataPersistenceObj?.SaveData(_activeData);
                 }
             }
+            
+            _activeData.LastUpdated = System.DateTime.Now.ToBinary();
 
-            // timestamp the data so we know when it was last saved
-            _gameData.LastUpdated = System.DateTime.Now.ToBinary();
-
-            // save that data to a file using the data handler
-            _dataHandler.Save(_gameData, profileId);
+            //only force a version naturally if it's not artificially overridden 
+            if (overrideData == null)
+            {
+                _activeData.BuildVersion = Application.version;
+            }
+            
+            _dataHandler.Save(_activeData, profileId);
         }
 
         private void OnApplicationQuit() 
@@ -224,7 +279,7 @@ namespace CamLib
             SaveGame();
         }
 
-        private List<IDataPersistence<T>> FindAllDataPersistenceObjects() 
+        private List<IDataPersistence<T>> FindAllPersistenceObjectsInScene() 
         {
             var monos = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             var dataPersistenceObjects = new List<IDataPersistence<T>>();
@@ -233,6 +288,7 @@ namespace CamLib
             {
                 if (mono is IDataPersistence<T> dataPersistenceObj)
                 {
+                    DataPersistenceGameObjects.Add(mono.gameObject);
                     dataPersistenceObjects.Add(dataPersistenceObj);
                 }
             }
@@ -241,24 +297,34 @@ namespace CamLib
         }
 
         [PublicAPI]
-        public bool HasGameData() 
-        {
-            return _gameData != null;
-        }
-
-        [PublicAPI]
-        public Dictionary<string, T> GetAllProfilesGameData() 
+        public Dictionary<string, T> LoadAllProfiles() 
         {
             return _dataHandler.LoadAllProfiles();
         }
 
-        private IEnumerator AutoSave() 
+        private void TryAutoSave()
         {
-            while (true) 
+            if (_autoSaveTimeSeconds <= 0)
             {
-                yield return new WaitForSeconds(_autoSaveTimeSeconds);
-                SaveGame();
-                Debug.Log("Auto Saved Game");
+                return;
+            }
+            
+            // start up the auto saving coroutine
+            if (_autoSaveCoroutine != null)
+            {
+                StopCoroutine(_autoSaveCoroutine);
+            }
+
+            _autoSaveCoroutine = StartCoroutine(AutoSave());
+            
+            IEnumerator AutoSave() 
+            {
+                while (true) 
+                {
+                    yield return new WaitForSeconds(_autoSaveTimeSeconds);
+                    SaveGame();
+                    Debug.Log($"Auto Saved Game \"{_selectedProfileId}\"");
+                }
             }
         }
     }

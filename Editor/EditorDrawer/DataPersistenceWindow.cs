@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace CamLib.Editor
 {
+    /// <summary>
+    /// Derive this so you can use it with your GameData-derived class.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class DataPersistenceWindow<T> : EditorWindow where T : GameData
     {
         public T _gameData;
@@ -19,42 +23,46 @@ namespace CamLib.Editor
         public SerializedProperty _managerPropFileName;
         
         private Vector2 scroll;
-
-        //not doing a menuitem, but enable if this is preferred
-        //[MenuItem("Tools/SaveDataWindow")]
-        public static void CreateWindow<TWindow>(DataPersistenceManager<T> ctx = null) where TWindow : DataPersistenceWindow<T>
+        
+        public static void GetWindow<TWindow>(DataPersistenceManager<T> ctx = null, string initialProfileId = null) where TWindow : DataPersistenceWindow<T>
         {
-            TWindow saveDataWindow = GetWindow<TWindow>();
+            TWindow saveDataWindow = EditorWindow.GetWindow<TWindow>();
             saveDataWindow.titleContent = new GUIContent()
             {
                 text = "Save Data",
                 image = EditorGUIUtility.IconContent("d_SaveAs").image
             };
             saveDataWindow._managerPrefab = ctx;
+            saveDataWindow._profileId = initialProfileId;
         }
-        
+
+        private void OnEnable()
+        {
+            _serializedObject = new SerializedObject(this);
+            _propId = _serializedObject.FindProperty(nameof(_profileId));
+            _propManagerPrefab = _serializedObject.FindProperty(nameof(_managerPrefab));
+            _propSaveData = _serializedObject.FindProperty(nameof(_gameData));
+        }
+
         public void OnGUI()
-        { 
-            if (_serializedObject == null)
-            {
-                _serializedObject = new SerializedObject(this);
-                _propId = _serializedObject.FindProperty(nameof(_profileId));
-                _propManagerPrefab = _serializedObject.FindProperty(nameof(_managerPrefab));
-                _propSaveData = _serializedObject.FindProperty(nameof(_gameData));
-            }
-            
+        {
+            _serializedObject.Update();
+            DrawGui();
+            _serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DrawGui()
+        {
             if (GUILayout.Button("Open Save Path"))
             {
                 Application.OpenURL(Application.persistentDataPath);
             }
             
-            _serializedObject.Update();
 
             EditorGUILayout.PropertyField(_propManagerPrefab);
             if (_propManagerPrefab.objectReferenceValue == null)
             {
-                EditorGUILayout.HelpBox("Assign the prefab to begin", MessageType.Warning);
-                _serializedObject.ApplyModifiedProperties();
+                EditorGUILayout.HelpBox("Assign the instance/prefab to begin", MessageType.Warning);
                 return;
             }
 
@@ -71,7 +79,6 @@ namespace CamLib.Editor
             if (string.IsNullOrEmpty(_propId.stringValue))
             {
                 EditorGUILayout.HelpBox("Set a profile", MessageType.Warning);
-                _serializedObject.ApplyModifiedProperties();
                 return;
             }
 
@@ -108,14 +115,13 @@ namespace CamLib.Editor
                 if (GUILayout.Button("Delete"))
                 {
                     _managerPrefab.InitializeDataHandler();
-                    _managerPrefab.DeleteProfileData(_profileId);
+                    _managerPrefab.ClearProfileData(_profileId);
                 }
             }
 
             if (_propSaveData == null)
             {
                 EditorGUILayout.HelpBox("Save Data property appears to be null. Ensure your data is serializable", MessageType.Error);
-                _serializedObject.ApplyModifiedProperties();
                 return;
             }
             
@@ -124,9 +130,6 @@ namespace CamLib.Editor
             EditorGUILayout.PropertyField(_propSaveData);
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
-            
-
-            _serializedObject.ApplyModifiedProperties();
         }
     }
 }
