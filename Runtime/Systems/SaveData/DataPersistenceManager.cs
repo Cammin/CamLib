@@ -67,7 +67,7 @@ namespace CamLib
 
             if (DataPersistenceEditorPrefs.DisableDataPersistence) 
             {
-                Debug.LogWarning("Data Persistence is disabled");
+                Debug.Log("Data Persistence is disabled");
                 return;
             }
 
@@ -147,7 +147,8 @@ namespace CamLib
         }
 
         /// <summary>
-        /// load the game, which will use that profile, updating our game data accordingly
+        /// Load the game, which will use that profile.
+        /// If no profile exists, will create a new one on it's own.
         /// </summary>
         [PublicAPI]
         public T LoadGame(string profileId = null)

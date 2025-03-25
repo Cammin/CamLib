@@ -10,9 +10,16 @@ namespace CamLib
     {
         public string _prefix = "ver. ";
         public TMP_Text _text;
+        public bool _onlyInDevBuild;
 
         private void Start()
         {
+            if (_onlyInDevBuild && !Debug.isDebugBuild)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+            
             _text.text = $"{_prefix}{Application.version}";
         }
     }

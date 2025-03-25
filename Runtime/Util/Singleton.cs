@@ -33,7 +33,7 @@ namespace CamLib
                     return _instance;
                 }
             
-                //find if nonexistent because race conditions
+                //find if nonexistent because race conditions. this will search all scenes, even if a scene is not the active scene
                 _instance = FindAnyObjectByType<T>(FindObjectsInactive.Include);
                 if (_instance != null)
                 {

@@ -6,6 +6,9 @@ namespace CamLib.Editor
 {
     public static class MakeZip
     {
+        /// <summary>
+        /// Will look for a build inside of the "Build" folder, and generates a folder called "Builds" which contains the zip for the current platform.
+        /// </summary>
         [MenuItem("Tools/CamLib/ZipTheBuild")]
         public static void MakeBuildZip()
         {
