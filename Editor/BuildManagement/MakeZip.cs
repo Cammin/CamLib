@@ -6,10 +6,20 @@ namespace CamLib.Editor
 {
     public static class MakeZip
     {
+        [MenuItem("Tools/CamLib/Zip Build - Make Folder Locations")]
+        public static void MakeBuildZipFolderLocation()
+        {
+            BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+            string buildDir = Path.Combine(Application.dataPath, "..", "Build", target.ToString());
+            Directory.CreateDirectory(buildDir);
+
+            ShowExplorer(buildDir);
+        }
+
         /// <summary>
         /// Will look for a build inside of the "Build" folder, and generates a folder called "Builds" which contains the zip for the current platform.
         /// </summary>
-        [MenuItem("Tools/CamLib/ZipTheBuild")]
+        [MenuItem("Tools/CamLib/Zip Build - Make Zip")]
         public static void MakeBuildZip()
         {
             BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
