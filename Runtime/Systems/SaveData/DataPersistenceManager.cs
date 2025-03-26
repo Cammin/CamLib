@@ -158,7 +158,7 @@ namespace CamLib
 
             if (Application.isPlaying && DataPersistenceEditorPrefs.DisableDataPersistence)
             {
-                Debug.Log("Tried loading but was disabled for editor");
+                Debug.Log($"Tried loading save \"{profileId}\" but was disabled for editor");
                 return null;
             }
 
@@ -246,13 +246,13 @@ namespace CamLib
             // return right away if data persistence is disabled
             if (Application.isPlaying && DataPersistenceEditorPrefs.DisableDataPersistence) 
             {
-                Debug.Log("Tried saving but was disabled for editor");
+                Debug.Log($"Tried saving save \"{profileId}\" but was disabled for editor");
                 return;
             }
 
             if (_activeData == null) 
             {
-                Debug.LogWarning("Tried to save NULL data, cancelled.");
+                Debug.LogWarning($"Tried to save NULL data to \"{profileId}\", cancelled.");
                 return;
             }
 
