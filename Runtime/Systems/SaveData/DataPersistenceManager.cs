@@ -10,6 +10,7 @@ namespace CamLib
     /// <summary>
     /// Derive an empty class from this where T is the data class you want to serialize.
     /// Add this component to your scene to manage save data.
+    /// Based on the save system from Trevor Mock https://github.com/shapedbyrainstudios/save-load-system
     /// </summary>
     public abstract class DataPersistenceManager<T> : MonoBehaviour where T : GameData
     {
