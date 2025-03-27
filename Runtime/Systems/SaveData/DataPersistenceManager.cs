@@ -68,7 +68,6 @@ namespace CamLib
 
             if (DataPersistenceEditorPrefs.DisableDataPersistence) 
             {
-                Debug.Log("Data Persistence is disabled");
                 return;
             }
 
