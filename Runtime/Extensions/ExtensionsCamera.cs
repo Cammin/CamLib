@@ -23,7 +23,7 @@ namespace CamLib
             return new Rect(bottomLeft, size);
         }
         
-        public static bool IsPointInView(this Camera cam, Vector2 pos)
+        public static bool IsPointInside(this Camera cam, Vector2 pos)
         {
             Vector3 view = cam.WorldToViewportPoint(pos);
             return view.z > 0 &&
