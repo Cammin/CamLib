@@ -10,21 +10,26 @@ namespace CamLib
     public static class DebugUtil
     {
         [Conditional("UNITY_EDITOR")]
-        public static void DrawCross(Vector2 pos, Color color, float size = 0.2f)
+        public static void DrawCross(Vector2 pos, Color color, float size = 0.2f, float duration = 0)
         {
+            if (duration == 0)
+            {
+                duration = Time.deltaTime;
+            }
+            
             pos += Random.insideUnitCircle * 0.01f;
             
             Vector2 upRight = new Vector2(size, size);
             Vector2 upLeft = new Vector2(-size, size);
             
-            Debug.DrawLine(pos + upRight, pos - upRight, color);
-            Debug.DrawLine(pos + upLeft, pos - upLeft, color);
+            Debug.DrawLine(pos + upRight, pos - upRight, color, duration);
+            Debug.DrawLine(pos + upLeft, pos - upLeft, color, duration);
         }
         
         [Conditional("UNITY_EDITOR")]
         public static void DrawPoint(Vector3 position, Color color, float duration)
         {
-            DrawCross(position, color, 0.1f);
+            DrawCross(position, color, 0.1f, duration);
         }
         
         [Conditional("UNITY_EDITOR")]

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Game
+namespace CamLib
 {
     /// <summary>
     /// Simple component that Makes an animator play with a random offset. For example, if multiple flags placed next to each other should have variety 

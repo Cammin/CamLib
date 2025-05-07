@@ -9,6 +9,10 @@ namespace CamLib
         {
             return list == null || list.Count == 0;
         }
+        public static bool IsNullOrEmpty<T>(this T[] array)
+        {
+            return array == null || array.Length == 0;
+        }
         
         public static bool IsIndexValid<T>(this ICollection<T> list, int index)
         {
@@ -45,24 +49,16 @@ namespace CamLib
             return list;
         }
         
-        public static T GetRandomElement<T>(this T[] array)
+        public static T GetRandom<T>(this T[] array)
         {
-            if (array.IsNullOrEmpty())
-            {
-                return default;
-            }
-
+            if (array.IsNullOrEmpty()) return default;
             int random = Random.Range(0, array.Length);
             return array[random];
         }
         
-        public static T GetRandomElement<T>(this IList<T> list)
+        public static T GetRandom<T>(this IList<T> list)
         {
-            if (list.IsNullOrEmpty())
-            {
-                return default;
-            }
-
+            if (list.IsNullOrEmpty()) return default;
             int random = Random.Range(0, list.Count);
             return list[random];
         }

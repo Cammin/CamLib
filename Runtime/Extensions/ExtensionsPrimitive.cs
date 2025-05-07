@@ -23,6 +23,11 @@ namespace CamLib
         {
             return Math.Abs(val % 1f) < THRESHOLD;
         }
+        
+        public static int ToPercent(this float normalizedValue)
+        {
+            return Mathf.RoundToInt(normalizedValue * 100);
+        }
 
         public static float RandomVariance(this float val)
         {

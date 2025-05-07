@@ -23,6 +23,9 @@ namespace CamLib
             return new Rect(bottomLeft, size);
         }
         
+        /// <summary>
+        /// Does a point exist inside the camera? Essentially if the camera is able to see this point.
+        /// </summary>
         public static bool IsPointInside(this Camera cam, Vector2 pos)
         {
             Vector3 view = cam.WorldToViewportPoint(pos);

@@ -6,13 +6,19 @@ namespace CamLib
     [PublicAPI]
     public static class ExtensionsVector
     {
-        public static Vector2 Magnitude(this Vector2 vector, float newMagnitude)
+        public static Vector2 SetMagnitude(this Vector2 vector, float newMagnitude)
         {
             return vector.normalized * newMagnitude;
         }
         
         private const float DEFAULT_SNAP_VALUE = 0.0625f;
         
+        /// <summary>
+        /// used for snapping to a grid. Like the magnet scene tool to make objects snap to certain positions
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="snapValue"></param>
+        /// <returns></returns>
         public static Vector3 SnappedToGrid(this Vector3 vector, float snapValue = DEFAULT_SNAP_VALUE) => SnappedToGrid((Vector2)vector, snapValue);
         public static Vector2 SnappedToGrid(this Vector2 vector, float snapValue = DEFAULT_SNAP_VALUE)
         {

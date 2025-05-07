@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game
+namespace CamLib
 {
     /// <summary>
     /// Simple script that scrolls a repeating texture on a sprite renderer. Good for repeating overhead clouds, etc

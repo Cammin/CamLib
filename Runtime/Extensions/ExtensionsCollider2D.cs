@@ -6,6 +6,11 @@ namespace CamLib
     [PublicAPI]
     public static class ExtensionsCollider2D
     {
+        /// <summary>
+        /// World space rectangle of this collider
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <returns></returns>
         private static Rect GetRect(this BoxCollider2D coll)
         {
             Transform transform = coll.transform;
