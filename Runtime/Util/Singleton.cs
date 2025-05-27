@@ -7,18 +7,18 @@ namespace CamLib
     /// </summary>
     public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
-        public bool _doNotDestroyOnLoad = false;
+        [SerializeField] private bool _doNotDestroyOnLoad;
         
         private static T _instance;
         
         /// <summary>
-        /// If trying to access an instance every update (or a lot) that may not exist, but so it's not doing FindAnyObjectByType every time
+        /// Indicates whether an instance exists without trying to create one
         /// </summary>
         public static bool HasInstance => _instance != null;
 
 #if UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        public static void ResetInstance()
+        private static void ResetInstance()
         {
             _instance = null;
         }
@@ -37,34 +37,46 @@ namespace CamLib
                 _instance = FindAnyObjectByType<T>(FindObjectsInactive.Include);
                 if (_instance != null)
                 {
-                    Debug.Log($"{typeof(T).Name} cached via FindAnyObjectByType");
+                    Debug.Log($"[Singleton] Using existing {typeof(T).Name} found in scene by FindAnyObjectByType.");
                     return _instance;
                 }
-                
-                Debug.LogError($"Singleton {typeof(T).Name} not found.");
+
+                Debug.LogError($"[Singleton] No instance of {typeof(T).Name} found.");
                 return null;
             }
         }
 
         protected virtual void Awake()
         {
-            if (_instance)
+            if (_instance != null && _instance != this)
             {
                 if (_doNotDestroyOnLoad)
                 {
                     Destroy(gameObject);
+                    Debug.LogWarning($"[Singleton] Duplicate {typeof(T).Name} destroyed.");
                     return;
                 }
                 
-                Debug.LogWarning($"Singleton {typeof(T).Name} instance already exists! {_instance.name}", gameObject);
+                Debug.LogWarning($"[Singleton] Multiple instances of {typeof(T).Name} detected! " +
+                    $"Current: {name}, Existing: {_instance.name}");
                 return;
             }
 
             _instance = this as T;
-            //Debug.Log($"Singleton {typeof(T).Name} cached");
+            
             if (_doNotDestroyOnLoad)
             {
+                transform.SetParent(null);
                 DontDestroyOnLoad(gameObject);
+                Debug.Log($"[Singleton] {typeof(T).Name} marked as DontDestroyOnLoad");
+            }
+        }
+        
+        protected virtual void OnDestroy()
+        {
+            if (_instance == this)
+            {
+                _instance = null;
             }
         }
     }
