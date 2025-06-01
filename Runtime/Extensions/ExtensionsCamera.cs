@@ -33,5 +33,15 @@ namespace CamLib
                    view.x >= 0 && view.x <= 1 &&
                    view.y >= 0 && view.y <= 1;
         }
+        /// <summary>
+        /// Does a point exist inside the camera? Essentially if the camera is able to see this point.
+        /// </summary>
+        public static bool IsPointInside(this Camera cam, Vector3 pos)
+        {
+            Vector3 view = cam.WorldToViewportPoint(pos);
+            return view.z > 0 &&
+                   view.x >= 0 && view.x <= 1 &&
+                   view.y >= 0 && view.y <= 1;
+        }
     }
 }
