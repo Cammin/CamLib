@@ -4,35 +4,35 @@ using System.Text;
 
 namespace CamLib
 {
-public static class TextUtils
-{
-    private const string ColorTagPrefix = "<color=#";
-    private const string ColorTagSuffix = "</color>";
-    private const string CloseBracket = ">";
-    
-    private static readonly Dictionary<Color32, string> ColorCache = new Dictionary<Color32, string>();
-    
-    private static readonly StringBuilder StringBuilder = new StringBuilder(64);
-
-    public static string ColorRichText(string text, Color color)
+    public static class TextUtils
     {
-        Color32 color32 = color;
-        if (!ColorCache.TryGetValue(color32, out string hexColor))
-        {
-            hexColor = ColorUtility.ToHtmlStringRGB(color);
-            ColorCache[color32] = hexColor;
-        }
+        private const string ColorTagPrefix = "<color=#";
+        private const string ColorTagSuffix = "</color>";
+        private const string CloseBracket = ">";
+        
+        private static readonly Dictionary<Color32, string> ColorCache = new Dictionary<Color32, string>();
+        
+        private static readonly StringBuilder StringBuilder = new StringBuilder(64);
 
-        StringBuilder.Clear()
-            .Append(ColorTagPrefix)
-            .Append(hexColor)
-            .Append(CloseBracket)
-            .Append(text)
-            .Append(ColorTagSuffix);
-            
-        return StringBuilder.ToString();
-    }
-    
+        public static string ColorRichText(string text, Color color)
+        {
+            Color32 color32 = color;
+            if (!ColorCache.TryGetValue(color32, out string hexColor))
+            {
+                hexColor = ColorUtility.ToHtmlStringRGB(color);
+                ColorCache[color32] = hexColor;
+            }
+
+            StringBuilder.Clear()
+                .Append(ColorTagPrefix)
+                .Append(hexColor)
+                .Append(CloseBracket)
+                .Append(text)
+                .Append(ColorTagSuffix);
+                
+            return StringBuilder.ToString();
+        }
+        
         public static string ColorRichText(string text, string colorHex)
         {
             colorHex = colorHex.TrimStart('#');
@@ -64,5 +64,4 @@ public static class TextUtils
             ColorCache.Clear();
         }
     }
-
 }
