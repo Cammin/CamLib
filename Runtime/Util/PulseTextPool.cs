@@ -22,6 +22,12 @@ namespace CamLib
         private float _fontSize;
         private ObjectPool<TMP_Text> _pool;
 
+        [ContextMenu("TestSpawn")]
+        internal void TestShowText()
+        {
+            ShowText(transform.position, "Test", Random.ColorHSV());
+        }
+        
         private void Awake()
         {
             if (!_textPrefab)

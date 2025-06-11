@@ -8,9 +8,9 @@ namespace CamLib
     public class SineWaveLocalPosition : MonoBehaviour
     {
         [Tooltip("How far it extents")] 
-        public Vector2 _amplitude;
+        public Vector2 _amplitude = Vector2.one;
         [Tooltip("How quickly does it move back and forth")] 
-        public Vector2 _oscillation;
+        public Vector2 _oscillation = Vector2.one;
         [Tooltip("Offset the movement relative to other objects")] 
         public Vector2 _oscillationOffset;
 
