@@ -51,7 +51,7 @@ namespace CamLib.Editor
             ImageContent.image = Preview ? Preview : Mini;
         }
 
-        public void Draw()
+        public void Draw(float prefValue)
         {
             TryLoad();
             
@@ -67,17 +67,18 @@ namespace CamLib.Editor
                 rect.left = 1;
                 rect.right = 1;
             }
-
-            float height = 50;
             
+            GUILayoutOption layoutHeight = GUILayout.Height(prefValue);
+            GUILayoutOption layoutWidth = GUILayout.Width(prefValue);
+
             using (new GUILayout.HorizontalScope())
             {
-                if (GUILayout.Button(ImageContent, IconStyle, GUILayout.Height(height), GUILayout.Width(height)))
+                if (GUILayout.Button(ImageContent, IconStyle, layoutHeight, layoutWidth))
                 {
                     AssetDatabase.OpenAsset(Obj);
                 }
             
-                if (GUILayout.Button(Content, TextStyle, GUILayout.Height(height)))
+                if (GUILayout.Button(Content, TextStyle, layoutHeight))
                 {
                     EditorGUIUtility.PingObject(Obj);
                     Selection.activeObject = Obj;
