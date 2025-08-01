@@ -109,7 +109,7 @@ namespace CamLib
     public static class HandlesUtil
     {
         [Conditional("UNITY_EDITOR")]
-        public static void DrawText(Vector2 pos, string txt)
+        public static void DrawText(Vector3 pos, string txt)
         {
 #if UNITY_EDITOR
             UnityEditor.Handles.color = new Color(0.2f,0.2f,0.2f,1);
