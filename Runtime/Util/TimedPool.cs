@@ -68,7 +68,7 @@ namespace CamLib
             }
         }
         
-        public GameObject Spawn(Vector2 pos)
+        public GameObject Spawn(Vector3 pos)
         {
             var v = _pool.Get();
             v.SetActive(true);

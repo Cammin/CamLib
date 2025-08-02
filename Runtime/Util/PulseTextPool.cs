@@ -16,8 +16,8 @@ namespace CamLib
         public GameObject _textPrefab;
         public int _prewarmCount = 2;
         public float _duration = 1;
-        public Vector2 _destinationOffset = Vector2.up;
-        public Vector2 _destinationRandomOffset = new Vector2(0.1f, 0.1f);
+        public Vector3 _destinationOffset = Vector3.up;
+        public Vector3 _destinationRandomOffset = new Vector3(0.1f, 0.1f, 0.1f);
 
         private float _fontSize;
         private ObjectPool<TMP_Text> _pool;
@@ -90,7 +90,7 @@ namespace CamLib
         /// <summary>
         /// Show some text at a location
         /// </summary>
-        public TMP_Text ShowText(Vector2 from, string text, Color color = default, float textSizeMultiplier = 1f)
+        public TMP_Text ShowText(Vector3 from, string text, Color color = default, float textSizeMultiplier = 1f)
         {
             TMP_Text instance = _pool.Get();
             instance.transform.position = from;
@@ -98,9 +98,11 @@ namespace CamLib
             instance.text = text;
             instance.fontSize = _fontSize * textSizeMultiplier;
         
-            Vector2 destination = new(
+            Vector3 destination = new(
                 from.x + _destinationOffset.x + Random.Range(-_destinationRandomOffset.x, _destinationRandomOffset.x),
-                from.y + _destinationOffset.y + Random.Range(-_destinationRandomOffset.y, _destinationRandomOffset.y));
+                from.y + _destinationOffset.y + Random.Range(-_destinationRandomOffset.y, _destinationRandomOffset.y),
+                from.z + _destinationOffset.z + Random.Range(-_destinationRandomOffset.z, _destinationRandomOffset.z)
+                );
 
             instance.transform.DOMove(destination, _duration).OnComplete(() =>
             {
