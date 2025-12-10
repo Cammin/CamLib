@@ -47,14 +47,6 @@ namespace CamLib
         public int PersistentObjectCount => DataPersistenceObjects.Count;
         public bool HasGameData => _activeData != null;
 
-#if  UNITY_EDITOR
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        public static void ResetStatics()
-        {
-            Instance = null;
-        }
-#endif
-
         private void Awake() 
         {
             if (Instance != null) 

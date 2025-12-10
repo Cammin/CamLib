@@ -15,14 +15,6 @@ namespace CamLib
         /// Indicates whether an instance exists without trying to create one
         /// </summary>
         public static bool HasInstance => _instance != null;
-
-#if UNITY_EDITOR
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetInstance()
-        {
-            _instance = null;
-        }
-#endif
         
         public static T Instance
         {
