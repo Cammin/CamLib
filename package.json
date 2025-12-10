@@ -1,6 +1,6 @@
 {
   "name": "com.cammin.camlib",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "displayName": "CamLib",
   "description": "Cammin's personal Unity utility library. I don't give any regard to compatibility or unity version, so beware!",
   "documentationUrl": "https://github.com/Cammin/CamLib",
