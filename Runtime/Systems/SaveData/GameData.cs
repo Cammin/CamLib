@@ -5,15 +5,16 @@ using UnityEngine;
 namespace CamLib
 {
     /// <summary>
-    /// Derive from this class and serve as your game's master save data class. The serializer is System.Text.Json
+    /// Derive from this class and serve as your game's master save data class.
+    /// The serializer is System.Text.Json, so you could use JsonPropertyName etc
     /// </summary>
     [Serializable]
     public abstract class GameData
     {
-        [JsonPropertyName("lastUpdated")]
-        public long LastUpdated;
-        [JsonPropertyName("buildVersion")]
+        [JsonPropertyName("buildVersion"), JsonPropertyOrder(-2)]
         public string BuildVersion;
+        [JsonPropertyName("lastUpdated"), JsonPropertyOrder(-1)]
+        public long LastUpdated;
 
         /// <summary>
         /// The values defined in this constructor will be the default values

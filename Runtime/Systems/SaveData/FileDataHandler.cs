@@ -21,6 +21,12 @@ namespace CamLib
         private const string encryptionCodeWord = "word";
         private const string backupExtension = ".backup";
 
+        private readonly JsonSerializerOptions _options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            IncludeFields = true,
+        };
+        
         public FileDataHandler(string rootDir, string fileName, bool encrypt) 
         {
             this.rootDir = rootDir;
@@ -60,7 +66,7 @@ namespace CamLib
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
-                loadedData = JsonSerializer.Deserialize<T>(dataToLoad);
+                loadedData = JsonSerializer.Deserialize<T>(dataToLoad, _options);
             }
             catch (Exception e) 
             {
@@ -100,9 +106,7 @@ namespace CamLib
             try 
             {
                 Directory.CreateDirectory(profileDir);
-
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string dataToWrite = JsonSerializer.Serialize(data, options);
+                string dataToWrite = JsonSerializer.Serialize(data, _options);
 
                 if (encrypt) 
                 {

@@ -76,7 +76,8 @@ namespace CamLib.Editor
             EditorGUIUtility.labelWidth = labelWidth;
             _serializedObject.ApplyModifiedProperties();
         }
-
+        
+        
         private void DrawGui()
         {
             DataPersistenceEditorPrefs.DisableDataPersistence = EditorGUILayout.Toggle(contentPrefDisableDataPersistence, DataPersistenceEditorPrefs.DisableDataPersistence);
@@ -114,8 +115,7 @@ namespace CamLib.Editor
                     if (GUILayout.Button(s, EditorStyles.miniLabel))
                     {
                         _propId.stringValue = Path.GetFileName(s);
-                        GUI.FocusControl(null);
-                        Repaint();
+                        DropFocus();
                     }
                 }
 
@@ -138,6 +138,7 @@ namespace CamLib.Editor
             {
                 _managerInstance.InitializeDataHandler();
                 _managerInstance.SaveGame(_profileId, _gameData);
+                DropFocus();
             }
 
             using (new EditorGUI.DisabledScope(!fileExists || !dirExists))
@@ -146,12 +147,14 @@ namespace CamLib.Editor
                 {
                     _managerInstance.InitializeDataHandler();
                     _gameData = _managerInstance.LoadGame(_profileId);
+                    DropFocus();
                 }
                 
                 if (GUILayout.Button("Delete"))
                 {
                     _managerInstance.InitializeDataHandler();
                     _managerInstance.ClearProfileData(_profileId);
+                    DropFocus();
                 }
                 
             }
@@ -160,6 +163,7 @@ namespace CamLib.Editor
             {
                 _gameData = (T)Activator.CreateInstance(typeof(T));
                 _gameData.OnConstruct();
+                DropFocus();
             }
             
             GUILayout.FlexibleSpace();
@@ -193,6 +197,12 @@ namespace CamLib.Editor
             GUILayout.EndScrollView();
             GUILayout.Label("This is merely an editor. It does not display accurate data unless you Load.", EditorStyles.miniLabel);
             GUILayout.EndVertical();
+        }
+
+        private void DropFocus()
+        {
+            GUI.FocusControl(null);
+            Repaint();
         }
     }
 }
