@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using UnityEngine;
 
 namespace CamLib
@@ -59,7 +60,7 @@ namespace CamLib
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
-                loadedData = JsonUtility.FromJson<T>(dataToLoad);
+                loadedData = JsonSerializer.Deserialize<T>(dataToLoad);
             }
             catch (Exception e) 
             {
@@ -100,7 +101,8 @@ namespace CamLib
             {
                 Directory.CreateDirectory(profileDir);
 
-                string dataToWrite = JsonUtility.ToJson(data, true);
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string dataToWrite = JsonSerializer.Serialize(data, options);
 
                 if (encrypt) 
                 {
