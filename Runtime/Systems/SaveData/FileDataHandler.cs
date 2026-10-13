@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace CamLib
@@ -25,7 +27,7 @@ namespace CamLib
             this.encrypt = encrypt;
         }
 
-        public T Load(string profileId, bool allowRestoreFromBackup = true) 
+        public T Load(string profileId, bool allowRestoreFromBackup = true, bool log = true) 
         {
             if (profileId == null) 
             {
@@ -77,7 +79,7 @@ namespace CamLib
                 }
             }
 
-            Debug.Log($"Loaded save data for {profileId}");
+            if (log) Debug.Log($"Loaded save data for {profileId}");
             return loadedData;
         }
         
@@ -168,7 +170,7 @@ namespace CamLib
         /// <summary>
         /// Loads every single profile from inside the directory
         /// </summary>
-        public Dictionary<string, T> LoadAllProfiles() 
+        public Dictionary<string, T> LoadAllProfiles(bool log = true) 
         {
             Dictionary<string, T> profileDictionary = new Dictionary<string, T>();
 
@@ -177,6 +179,10 @@ namespace CamLib
             {
                 string profileId = dirInfo.Name;
 
+                //unique exception folder
+                if (profileId == "Unity")
+                    continue;
+                
                 string profilePath = Path.Combine(rootDir, profileId, fileName);
                 if (!File.Exists(profilePath))
                 {
@@ -185,7 +191,7 @@ namespace CamLib
                     continue;
                 }
 
-                T profileData = Load(profileId);
+                T profileData = Load(profileId, log: false);
                 
                 if (profileData != null) 
                 {
@@ -202,12 +208,7 @@ namespace CamLib
         
         public string FindMostRecentlyUpdatedProfileId()
         {
-            var profiles = LoadAllProfiles();
-            return FindMostRecentlyUpdatedProfileId(profiles);
-        }
-        
-        public string FindMostRecentlyUpdatedProfileId(Dictionary<string, T> profiles)
-        {
+            var profiles = LoadAllProfiles(false);
             string mostRecentProfileId = null;
             
             foreach (KeyValuePair<string, T> pair in profiles) 

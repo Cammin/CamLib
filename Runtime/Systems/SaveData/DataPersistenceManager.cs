@@ -123,11 +123,12 @@ namespace CamLib
             if (!string.IsNullOrEmpty(testProfile))
             {
                 _selectedProfileId = testProfile;
-                Debug.LogWarning($"Loading TEST profile \"{testProfile}\"");
+                Debug.Log($"Loading TEST profile \"{testProfile}\"");
             }
             else
             {
                 _selectedProfileId = _dataHandler.FindMostRecentlyUpdatedProfileId();
+                Debug.Log($"Loading most recent profile \"{_selectedProfileId}\"");
             }
         }
 
@@ -222,8 +223,8 @@ namespace CamLib
         }
 
         /// <summary>
+        /// This both writes to the profile state, and also writes to disk.
         /// Call this before you load a new scene so that persistence objects properly write their state before they are destroyed!
-        /// This 
         /// </summary>
         [PublicAPI]
         public void SaveGame(string profileId = null, T overrideData = null)

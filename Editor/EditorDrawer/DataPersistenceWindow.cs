@@ -19,7 +19,8 @@ namespace CamLib.Editor
         private SerializedProperty _propManagerObj;
         private SerializedProperty _propId;
 
-        public DataPersistenceManager<T> _managerPrefab;
+        [SerializeField] public DataPersistenceManager<T> _managerInstance;
+        
         private SerializedObject _managerObj;
         private SerializedProperty _managerPropFileName;
 
@@ -43,7 +44,7 @@ namespace CamLib.Editor
                 text = "Save Data",
                 image = EditorGUIUtility.IconContent("d_SaveAs").image
             };
-            saveDataWindow._managerPrefab = ctx;
+            saveDataWindow._managerInstance = ctx;
             saveDataWindow._profileId = initialProfileId;
         }
 
@@ -51,7 +52,7 @@ namespace CamLib.Editor
         {
             _serializedObject = new SerializedObject(this);
             _propId = _serializedObject.FindProperty(nameof(_profileId));
-            _propManagerObj = _serializedObject.FindProperty(nameof(_managerPrefab));
+            _propManagerObj = _serializedObject.FindProperty(nameof(_managerInstance));
             _propSaveData = _serializedObject.FindProperty(nameof(_gameData));
 
             
@@ -94,7 +95,7 @@ namespace CamLib.Editor
             
             if (_managerObj == null)
             {
-                _managerObj = new SerializedObject(_managerPrefab);
+                _managerObj = new SerializedObject(_managerInstance);
                 _managerPropFileName = _managerObj.FindProperty("_fileName");
             }
             _managerObj.Update();
@@ -108,7 +109,14 @@ namespace CamLib.Editor
                 string[] dirs = Directory.GetDirectories(Application.persistentDataPath);
                 foreach (string s in dirs)
                 {
-                    EditorGUILayout.LabelField(s, EditorStyles.miniLabel);
+                    if (s.EndsWith("Unity")) continue;
+                    
+                    if (GUILayout.Button(s, EditorStyles.miniLabel))
+                    {
+                        _propId.stringValue = Path.GetFileName(s);
+                        GUI.FocusControl(null);
+                        Repaint();
+                    }
                 }
 
                 return;
@@ -128,22 +136,22 @@ namespace CamLib.Editor
             
             if (GUILayout.Button("Save"))
             {
-                _managerPrefab.InitializeDataHandler();
-                _managerPrefab.SaveGame(_profileId, _gameData);
+                _managerInstance.InitializeDataHandler();
+                _managerInstance.SaveGame(_profileId, _gameData);
             }
 
             using (new EditorGUI.DisabledScope(!fileExists || !dirExists))
             {
                 if (GUILayout.Button("Load"))
                 {
-                    _managerPrefab.InitializeDataHandler();
-                    _gameData = _managerPrefab.LoadGame(_profileId);
+                    _managerInstance.InitializeDataHandler();
+                    _gameData = _managerInstance.LoadGame(_profileId);
                 }
                 
                 if (GUILayout.Button("Delete"))
                 {
-                    _managerPrefab.InitializeDataHandler();
-                    _managerPrefab.ClearProfileData(_profileId);
+                    _managerInstance.InitializeDataHandler();
+                    _managerInstance.ClearProfileData(_profileId);
                 }
                 
             }
@@ -183,6 +191,7 @@ namespace CamLib.Editor
             scroll = GUILayout.BeginScrollView(scroll);
             EditorGUILayout.PropertyField(_propSaveData);
             GUILayout.EndScrollView();
+            GUILayout.Label("This is merely an editor. It does not display accurate data unless you Load.", EditorStyles.miniLabel);
             GUILayout.EndVertical();
         }
     }
