@@ -14,14 +14,14 @@ namespace CamLib.Editor
         public T _gameData;
         public string _profileId;
 
-        public SerializedObject _serializedObject;
-        public SerializedProperty _propSaveData;
-        public SerializedProperty _propManagerObj;
-        public SerializedProperty _propId;
+        private SerializedObject _serializedObject;
+        private SerializedProperty _propSaveData;
+        private SerializedProperty _propManagerObj;
+        private SerializedProperty _propId;
 
         public DataPersistenceManager<T> _managerPrefab;
-        public SerializedObject _managerObj;
-        public SerializedProperty _managerPropFileName;
+        private SerializedObject _managerObj;
+        private SerializedProperty _managerPropFileName;
 
         private GUIContent managerContent;
         

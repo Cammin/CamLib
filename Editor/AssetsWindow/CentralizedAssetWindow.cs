@@ -18,9 +18,9 @@ namespace CamLib.Editor
     /// </summary>
     public class CentralizedAssetWindow : EditorWindow
     {
-        public SceneSwitcher Scenes = new SceneSwitcher();
+        private SceneSwitcher Scenes = new SceneSwitcher();
         public EditorPrefFields Prefs = new EditorPrefFields();
-        public AssetDisplay Assets = new AssetDisplay();
+        private AssetDisplay Assets = new AssetDisplay();
 
         private Vector2 Scroll;
         private CentralizedAssetWindowImplementation Impl;
