@@ -6,6 +6,7 @@ namespace CamLib
     /// <summary>
     /// Derive from this class and serve as your game's master save data class.
     /// </summary>
+    [Serializable]
     public abstract class GameData
     {
         public long LastUpdated;

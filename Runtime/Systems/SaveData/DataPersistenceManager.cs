@@ -274,7 +274,7 @@ namespace CamLib
 
         private List<IDataPersistence<T>> FindAllPersistenceObjectsInScene() 
         {
-            var monos = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var monos = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include);
             var dataPersistenceObjects = new List<IDataPersistence<T>>();
     
             foreach (var mono in monos)
